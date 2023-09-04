@@ -2,7 +2,7 @@ from pathlib import Path
 import os
 
 
-CSRF_TRUSTED_ORIGINS = ["https://8000-irabs174-inventory-9rfsn2a2jvu.ws-eu104.gitpod.io",]
+CSRF_TRUSTED_ORIGINS = ["https://8888-irabs174-inventory-n584xsmtszx.ws-eu104.gitpod.io",]
 
 SECRET_KEY = 'django-insecure-qlxl!?s,dh>giuh&^%SALEDC98AD%^$AJHG!?><<ADadfAR*da'
 
@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['8000-irabs174-inventory-9rfsn2a2jvu.ws-eu104.gitpod.io']
+ALLOWED_HOSTS = ['8888-irabs174-inventory-n584xsmtszx.ws-eu104.gitpod.io']
 
 DATABASES = {
     "default": {

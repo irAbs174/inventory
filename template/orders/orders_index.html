@@ -357,11 +357,10 @@
                 <div class="tab-pane fade" id="nav-home5" role="tabpanel" aria-labelledby="nav-5-tab">
                     <div>
                         <br>
-                        <h2 class="text-center wttc">لطفا کد سفارش را به انگلیسی وارد کنید</h2>
                         <form method="post" enctype="multipart/form-data" class="listpro row g-3 needs-validation mt-3">
                             <input type="hidden" name="job" value="submit_order">
                             <div class="col-md-4">
-                                <input name="order_code" type="text" class="form-control" id="validationDefault01"
+                                <input id="input_order_code" name="order_code" type="text" class="form-control" id="validationDefault01"
                                     placeholder="کدسفارش" required>
                             </div>
                             <div class="col-md-4">
@@ -397,28 +396,20 @@
 </div>
 {% block JS %}
 <script>
-    function convertToPersian(numberInput) {
-        var persianDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
-        var convertedNumber = "";
-        for (var i = 0; i < numberInput.length; i++) {
-            var charCode = numberInput.charCodeAt(i);
-            if (charCode >= 48 && charCode <= 57) {
-                // Convert ASCII digits to Persian digits
-                var persianDigit = persianDigits[charCode - 48];
-                convertedNumber += persianDigit;
-            } else {
-                convertedNumber += numberInput.charAt(i);
-            }
-        }
-        return convertedNumber;
-    }
+    $(document).ready(function() {
+        $('#input_order_code').keypress(function(e) {
+            var keyCode = e.which;
+            var keyChar = String.fromCharCode(keyCode);
 
-    function handleInputChange() {
-        var inputElement = document.getElementById("SEARCH");
-        var inputValue = inputElement.value;
-        var persianValue = convertToPersian(inputValue);
-        inputElement.value = persianValue;
-    }
+            // Using a regular expression to test for English numbers
+            if (!/^[0-9]+$/.test(keyChar)) {
+                e.preventDefault();
+                Swal.fire({
+                    text: 'تنها مجاز هستید از اعداد انگلیسی استفاده کنید',
+                });
+            }
+        });
+    });
 </script>
 {% endblock %}
 {% endblock %}
