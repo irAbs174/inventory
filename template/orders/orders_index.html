@@ -356,7 +356,6 @@
                 <!-- دفتر مرکزی -->
                 <div class="tab-pane fade" id="nav-home5" role="tabpanel" aria-labelledby="nav-5-tab">
                     <div>
-                        <br>
                         <form method="post" enctype="multipart/form-data" class="listpro row g-3 needs-validation mt-3">
                             <input type="hidden" name="job" value="submit_order">
                             <div class="col-md-4">
@@ -397,6 +396,26 @@
 {% block JS %}
 <script>
     $(document).ready(function() {
+        function disablePaste(event) {
+      event.preventDefault();
+    }
+    
+    // Disable copy event
+    function disableCopy(event) {
+      const selectedText = window.getSelection().toString();
+      
+      if (selectedText.length > 0) {
+        event.preventDefault();
+      }
+    }
+    
+    // Add event listeners
+    window.onload = function() {
+      const lockedInput = document.getElementById('input_order_code');
+      
+      lockedInput.addEventListener('paste', disablePaste);
+      lockedInput.addEventListener('copy', disableCopy);
+    };
         $('#input_order_code').keypress(function(e) {
             var keyCode = e.which;
             var keyChar = String.fromCharCode(keyCode);
