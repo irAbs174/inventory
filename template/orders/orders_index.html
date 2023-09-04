@@ -9,350 +9,416 @@
 {% block CONTENT %}
 {% if message %}
 <script>
-Swal.fire({
-            title: '{{message}}',
-            showConfirmButton: false,
-            timer: 3000,
-          });
+    Swal.fire({
+        title: '{{message}}',
+        showConfirmButton: false,
+        timer: 3000,
+    });
 </script>
 {% endif %}
-{% if user.is_authenticated %}{% include 'utils/menu.html' %}{% endif %}
-<div class="container-fluid mt-5">
-
-    <div class="formpro">
-        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <button class="nav-link wttc" id="nav-4-tab" data-bs-toggle="tab" data-bs-target="#nav-home4"
-            type="button" role="tab" aria-controls="nav-3" aria-selected="false">بررسی سفارشات امروز</button>
-            <button class="nav-link  wttc" id="nav-2-tab" data-bs-toggle="tab" data-bs-target="#nav-home2"
-                type="button" role="tab" aria-controls="nav-2" aria-selected="false">بسته بندی شده ها</button>
-            <button class="nav-link wttc" id="nav-3-tab" data-bs-toggle="tab" data-bs-target="#nav-home3"
-                type="button" role="tab" aria-controls="nav-3" aria-selected="false">ارسال شده ها</button>
-            <button class="nav-link active wttc" id="nav-1-tab" data-bs-toggle="tab" data-bs-target="#nav-home1"
-            type="button" role="tab" aria-controls="nav-1" aria-selected="true">جستجو</button>
-            <button class="nav-link wttc" id="nav-5-tab" data-bs-toggle="tab" data-bs-target="#nav-home5"
-                type="button" role="tab" aria-controls="nav-3" aria-selected="false">دفتر مرکزی</button>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3">{% if user.is_authenticated %}{% include 'utils/menu.html' %}{% endif %}
         </div>
-    </div>
-    <div class="tab-content" id="nav-tabContent">
-        <!-- برسی های امروز -->
-        <div class="tab-pane fade" id="nav-home4" role="tabpanel" aria-labelledby="nav-4-tab">
+        <div class="col-9">
 
-            <div>
-                {% for item in new_orders %}
-                <form method="post" class="row g-3 listpro">
-                    <input type="hidden" name="job" value="submit_new_orders">
-                    <div class="col-md-4">
-                        <input type="text" name="order_code" class="form-control" id="validationDefault01" value="{{ item.order_code }}" readonly>
+            <div class="mt-5">
+
+                <div class="formpro">
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <button class="nav-link wttc" id="nav-4-tab" data-bs-toggle="tab" data-bs-target="#nav-home4"
+                            type="button" role="tab" aria-controls="nav-3" aria-selected="false">بررسی سفارشات
+                            امروز</button>
+                        <button class="nav-link  wttc" id="nav-2-tab" data-bs-toggle="tab" data-bs-target="#nav-home2"
+                            type="button" role="tab" aria-controls="nav-2" aria-selected="false">بسته بندی شده
+                            ها</button>
+                        <button class="nav-link wttc" id="nav-3-tab" data-bs-toggle="tab" data-bs-target="#nav-home3"
+                            type="button" role="tab" aria-controls="nav-3" aria-selected="false">ارسال شده ها</button>
+                        <button class="nav-link active wttc" id="nav-1-tab" data-bs-toggle="tab"
+                            data-bs-target="#nav-home1" type="button" role="tab" aria-controls="nav-1"
+                            aria-selected="true">جستجو</button>
+                        <button class="nav-link wttc" id="nav-5-tab" data-bs-toggle="tab" data-bs-target="#nav-home5"
+                            type="button" role="tab" aria-controls="nav-3" aria-selected="false">دفتر مرکزی</button>
                     </div>
-                    <div class="col-md-4">
-                        <input type="text" name="full_name" class="form-control" id="validationDefault02" value="{{ item.full_name }}"
-                        readonly>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="input-group">
-                            <input name="phone_number" type="text" class="form-control" id="validationDefaultUsername"
-                                aria-describedby="inputGroupPrepend2" value="{{ item.phone_number }}" readonly>
-                        </div>
-                    </div>
-                    {% if item.package_status %}
-                    <div class="col-md-4">
-                        <select name="package_status" class="form-select" id="validationDefault04" required>
-                            <option>بسته بندی شده</option>
-                            <option>بسته بندی نشده</option>
-                        </select>
-                    </div>
-                    {% else %}
-                    <div class="col-md-4">
-                        <select name="package_status" class="form-select" id="validationDefault04" required>
-                            <option>بسته بندی نشده</option>
-                            <option>بسته بندی شده</option>
-                        </select>
-                    </div>
-                    {% endif %}
-                    <div class="col-md-4">
-                        <select name="send_method" class="form-select" id="validationDefault04" required>
-                            <option selected readonly>{{ item.send_method }}</option>
-                            <option>پست پیشتاز</option>
-                            <option>پیک موتوری</option>
-                            <option>دریافت حضوری</option>
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <input name="order_desc" class="form-control" value="{{ item.jpub }}" readonly>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="textseller"><span class="betc">متن ارسالی از طرف پرسنل دفتر:</span> <span name="order_desc">{{ item.order_desc }}</span></div>
-                    </div>
-                        <div class="col-md-6">
-                            <a href="/downloads/{{item.order_code}}"><button class="btn btn-danger w-100" type="button">دانلود فاکتور</button></a>
-                        </div>
-                        <div class="col-md-6">
-                            <button class="btn btn-primary w-100" type="submit">تکمیل بسته بندی</button>
+                </div>
+                <div class="tab-content" id="nav-tabContent">
+                    <!-- برسی های امروز -->
+                    <div class="tab-pane fade" id="nav-home4" role="tabpanel" aria-labelledby="nav-4-tab">
+
+                        <div>
+                            {% for item in new_orders %}
+                            <form method="post" class="row g-3 listpro">
+                                <input type="hidden" name="job" value="submit_new_orders">
+                                <div class="col-md-4">
+                                    <input type="text" name="order_code" class="form-control" id="validationDefault01"
+                                        value="{{ item.order_code }}" readonly>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" name="full_name" class="form-control" id="validationDefault02"
+                                        value="{{ item.full_name }}" readonly>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <input name="phone_number" type="text" class="form-control"
+                                            id="validationDefaultUsername" aria-describedby="inputGroupPrepend2"
+                                            value="{{ item.phone_number }}" readonly>
+                                    </div>
+                                </div>
+                                {% if item.package_status %}
+                                <div class="col-md-4">
+                                    <select name="package_status" class="form-select" id="validationDefault04" required>
+                                        <option>بسته بندی شده</option>
+                                        <option>بسته بندی نشده</option>
+                                    </select>
+                                </div>
+                                {% else %}
+                                <div class="col-md-4">
+                                    <select name="package_status" class="form-select" id="validationDefault04" required>
+                                        <option>بسته بندی نشده</option>
+                                        <option>بسته بندی شده</option>
+                                    </select>
+                                </div>
+                                {% endif %}
+                                <div class="col-md-4">
+                                    <select name="send_method" class="form-select" id="validationDefault04" required>
+                                        <option selected readonly>{{ item.send_method }}</option>
+                                        <option>پست پیشتاز</option>
+                                        <option>پیک موتوری</option>
+                                        <option>دریافت حضوری</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <input name="order_desc" class="form-control" value="{{ item.jpub }}" readonly>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="textseller"><span class="betc">متن ارسالی از طرف پرسنل دفتر:</span>
+                                        <span name="order_desc">{{ item.order_desc }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="/downloads/{{item.order_code}}" target="_blank"><button
+                                            class="btn btn-danger w-100" type="button">دانلود فاکتور</button></a>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-primary w-100" type="submit">تکمیل بسته بندی</button>
+                                </div>
+                            </form>
+
+                            {% empty %}
+                            <div class="bkbc wttc itemkala">
+                                <span>سفارش فعالی برای برسی وجود ندارد</span>
                             </div>
-                </form>
-                
-                {% empty %}
-                <div class="bkbc wttc itemkala">
-                    <span>سفارش فعالی برای برسی وجود ندارد</span>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+
+                    <!-- بسته بندی شده ها -->
+                    <div class="tab-pane fade" id="nav-home2" role="tabpanel" aria-labelledby="nav-2-tab">
+
+                        <div>
+                            {% for item in packaged_orders %}
+                            <form method="post" class="row g-3 listpro">
+                                <input type="hidden" name="job" value="submit_packaged_orders">
+                                <div class="col-md-4">
+                                    <input type="text" name="order_code" class="form-control" id="validationDefault01"
+                                        value="{{ item.order_code }}" readonly>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" name="full_name" class="form-control" id="validationDefault02"
+                                        value="{{ item.full_name }}" readonly>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <input name="phone_number" type="text" class="form-control"
+                                            id="validationDefaultUsername" aria-describedby="inputGroupPrepend2"
+                                            value="{{ item.phone_number }}" readonly>
+                                    </div>
+                                </div>
+                                {% if item.package_status %}
+                                <div class="col-md-4">
+                                    <input name="package_status" class="form-control" value="بسته بندی شده" readonly>
+                                </div>
+                                {% else %}
+                                <div class="col-md-4">
+                                    <input name="package_status" class="form-control" value="بسته بندی نشده" readonly>
+                                </div>
+                                {% endif %}
+                                {% if item.send_status %}
+                                <div class="col-md-4">
+                                    <select name="send_status" class="form-select" id="validationDefault04" required>
+                                        <option>پست شده</option>
+                                        <option>پست نشده</option>
+                                    </select>
+                                </div>
+                                {% else %}
+                                <div class="col-md-4">
+                                    <select name="send_status" class="form-select" id="validationDefault04" required>
+                                        <option>پست نشده</option>
+                                        <option>پست شده</option>
+                                    </select>
+                                </div>
+                                {% endif %}
+                                <div class="col-md-4">
+                                    <input name="send_method" class="form-control" value="{{ item.send_method }}"
+                                        readonly>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="textseller"><span class="betc">متن ارسالی از طرف پرسنل دفتر:</span>
+                                        <input type="text" name="order_desc" class="form-control"
+                                            value="{{item.order_desc}}" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="/downloads/{{item.order_code}}" target="_blank"><button
+                                            class="btn btn-danger w-100" type="button">دانلود فاکتور</button></a>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-primary w-100" type="submit">تکمیل بسته بندی</button>
+                                </div>
+                            </form>
+                            {% empty %}
+                            <div class="bkbc wttc itemkala">
+                                <span>سفارش بسته بندی شده ای برای ارسال وجود ندارد</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+
+                    <!-- ارسال شده ها -->
+                    <div class="tab-pane fade" id="nav-home3" role="tabpanel" aria-labelledby="nav-3-tab">
+
+                        <div>
+                            {% for item in sended_orders %}
+                            <form method="post" class="row g-3 listpro">
+                                <input type="hidden" name="job" value="submit_sended_orders">
+                                <div class="col-md-4">
+                                    <input type="text" name="order_code" class="form-control" id="validationDefault01"
+                                        value="{{ item.order_code }}" readonly>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" name="full_name" class="form-control" id="validationDefault02"
+                                        value="{{ item.full_name }}" readonly>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <input name="phone_number" type="text" class="form-control"
+                                            id="validationDefaultUsername" aria-describedby="inputGroupPrepend2"
+                                            value="{{ item.phone_number }}" readonly>
+                                    </div>
+                                </div>
+                                {% if item.package_status %}
+                                <div class="col-md-4">
+                                    <input name="package_status" class="form-control" value="بسته بندی شده" readonly>
+                                </div>
+                                {% else %}
+                                <div class="col-md-4">
+                                    <input name="package_status" class="form-control" value="بسته بندی نشده" readonly>
+                                </div>
+                                {% endif %}
+                                {% if item.send_status %}
+                                <div class="col-md-4">
+                                    <select name="send_status" class="form-select" id="validationDefault04" required>
+                                        <option>پست شده</option>
+                                        <option>پست نشده</option>
+                                    </select>
+                                </div>
+                                {% else %}
+                                <div class="col-md-4">
+                                    <select name="send_status" class="form-select" id="validationDefault04" required>
+                                        <option>پست نشده</option>
+                                        <option>پست شده</option>
+                                    </select>
+                                </div>
+                                {% endif %}
+                                <div class="col-md-4">
+                                    <input name="send_method" class="form-control" value="{{ item.send_method }}"
+                                        readonly>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="textseller"><span class="betc">متن ارسالی از طرف پرسنل
+                                            دفتر:</span><input type="text" name="order_desc" class="form-control"
+                                            value="{{item.order_desc}}" readonly></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="/downloads/{{item.order_code}}" target="_blank"><button
+                                            class="btn btn-danger w-100" type="button">دانلود فاکتور</button></a>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-primary w-100" type="submit">ثبت ارسال سفارش</button>
+                                </div>
+                            </form>
+                            {% empty %}
+                            <div class="bkbc wttc itemkala">
+                                <span>سفارش ارسال شده ای یافت نشد</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+
+                    <!-- جستجوی ارسال شده ها -->
+                    <div class="tab-pane fade show active " id="nav-home1" role="tabpanel" aria-labelledby="nav-1-tab"
+                        tabindex="0">
+
+                        <div>
+                            <form method="post" class="row g-3 listpro">
+                                <input type="hidden" name="job" value="submit_search">
+                                <div class="col-md-4">
+                                    <input name="searched_text" type="text" class="form-control"
+                                        id="validationDefault01" placeholder="شماره سفارش را وارد کنید">
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn btn-primary w-100" type="submit">جستجو</button>
+                                </div>
+                            </form>
+                            <hr>
+                            {% if search_result %}
+                            {% for item in search_result %}
+                            <form method="post" class="row g-3 listpro">
+                                <input type="hidden" name="job" value="edit_search">
+                                <div class="col-md-4">
+                                    <input type="text" name="order_code" class="form-control" id="SEARCH"
+                                        value="{{ item.order_code }}" readonly>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" name="full_name" class="form-control" id="validationDefault02"
+                                        value="{{ item.full_name }}" readonly>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <input name="phone_number" type="text" class="form-control"
+                                            id="validationDefaultUsername" aria-describedby="inputGroupPrepend2"
+                                            value="{{ item.phone_number }}" readonly>
+                                    </div>
+                                </div>
+                                {% if item.package_status %}
+                                <div class="col-md-4">
+                                    <select name="package_status" class="form-select" id="validationDefault04" required>
+                                        <option>بسته بندی شده</option>
+                                        <option>بسته بندی نشده</option>
+                                    </select>
+                                </div>
+
+                                {% else %}
+                                <div class="col-md-4">
+                                    <select name="package_status" class="form-select" id="validationDefault04" required>
+                                        <option>بسته بندی نشده</option>
+                                        <option>بسته بندی شده</option>
+                                    </select>
+                                </div>
+                                {% endif %}
+                                <div class="col-md-4">
+                                    <select name="send_method" class="form-select" id="validationDefault04" required>
+                                        <option selected readonly>{{ item.send_method }}</option>
+                                        <option>پست پیشتاز</option>
+                                        <option>پیک موتوری</option>
+                                        <option>دریافت حضوری</option>
+                                    </select>
+                                </div>
+                                {% if item.send_status %}
+                                <div class="col-md-4">
+                                    <select name="send_status" class="form-select" id="validationDefault04" required>
+                                        <option>پست شده</option>
+                                        <option>پست نشده</option>
+                                    </select>
+                                </div>
+                                {% else %}
+                                <div class="col-md-4">
+                                    <select name="send_status" class="form-select" id="validationDefault04" required>
+                                        <option>پست نشده</option>
+                                        <option>پست شده</option>
+                                    </select>
+                                </div>
+                                {% endif %}
+                                <div class="col-md-12">
+                                    <div class="textseller"><span class="betc">متن ارسالی از طرف پرسنل دفتر:</span>
+                                        <input type="text" name="order_desc" class="form-control"
+                                            value="{{item.order_desc}}" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="/downloads/{{item.order_code}}" target="_blank"><button
+                                            class="btn btn-danger w-100" type="button">دانلود فاکتور</button></a>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-primary w-100" type="submit">اعمال تغییرات</button>
+                                </div>
+                            </form>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+
+                    </div>
                 </div>
-                {% endfor %}
-            </div>
-
-        </div>
-
-        <!-- بسته بندی شده ها -->
-        <div class="tab-pane fade" id="nav-home2" role="tabpanel" aria-labelledby="nav-2-tab">
-
-            <div>
-                {% for item in packaged_orders %}
-                <form method="post" class="row g-3 listpro">
-                    <input type="hidden" name="job" value="submit_packaged_orders">
-                    <div class="col-md-4">
-                        <input type="text" name="order_code" class="form-control" id="validationDefault01" value="{{ item.order_code }}" readonly>
+                <!-- پایان جستجوی ارسال شده ها -->
+                <!-- دفتر مرکزی -->
+                <div class="tab-pane fade" id="nav-home5" role="tabpanel" aria-labelledby="nav-5-tab">
+                    <div>
+                        <br>
+                        <h2 class="text-center wttc">لطفا کد سفارش را به انگلیسی وارد کنید</h2>
+                        <form method="post" enctype="multipart/form-data" class="listpro row g-3 needs-validation mt-3">
+                            <input type="hidden" name="job" value="submit_order">
+                            <div class="col-md-4">
+                                <input name="order_code" type="text" class="form-control" id="validationDefault01"
+                                    placeholder="کدسفارش" required>
+                            </div>
+                            <div class="col-md-4">
+                                <input name="full_name" type="text" class="form-control" id="validationDefault02"
+                                    placeholder="نام نام خانوادگی" required>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <input name="phone_number" type="text" class="form-control"
+                                        id="validationDefaultUsername" aria-describedby="inputGroupPrepend2"
+                                        placeholder="شماره تماس" required>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="textseller"><span class="betc">متن ارسالی از طرف پرسنل دفتر:</span> <input
+                                        type="text" name="order_desc" class="form-control"> </div>
+                            </div>
+                            <div class="col-6">
+                                <input type="file" name="myfile" class="form-control"
+                                    placeholder="بارگزاری فاکتور سفارش" required>
+                            </div>
+                            <div class="col-6">
+                                <button class="btn btn-primary w-100" type="submit">ثبت تغییرات</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="col-md-4">
-                        <input type="text" name="full_name" class="form-control" id="validationDefault02" value="{{ item.full_name }}"
-                        readonly>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="input-group">
-                            <input name="phone_number" type="text" class="form-control" id="validationDefaultUsername"
-                                aria-describedby="inputGroupPrepend2" value="{{ item.phone_number }}" readonly>
-                        </div>
-                    </div>
-                    {% if item.package_status %}
-                    <div class="col-md-4">
-                        <input name="package_status" class="form-control" value="بسته بندی شده" readonly>
-                    </div>
-                    {% else %}
-                    <div class="col-md-4">
-                        <input name="package_status" class="form-control" value="بسته بندی نشده" readonly>
-                    </div>
-                    {% endif %}
-                    {% if item.send_status %}
-                    <div class="col-md-4">
-                        <select name="send_status" class="form-select" id="validationDefault04" required>
-                            <option>پست شده</option>
-                            <option>پست نشده</option>
-                        </select>
-                    </div>
-                    {% else %}
-                    <div class="col-md-4">
-                        <select name="send_status" class="form-select" id="validationDefault04" required>
-                            <option>پست نشده</option>
-                            <option>پست شده</option>
-                        </select>
-                    </div>
-                    {% endif %}
-                    <div class="col-md-4">
-                        <input name="send_method" class="form-control" value="{{ item.send_method }}" readonly>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="textseller"><span class="betc">متن ارسالی از طرف پرسنل دفتر:</span> <input type="text" name="order_desc" class="form-control" value="{{item.order_desc}}" readonly></div>
-                    </div>
-                    <div class="col-md-6">
-                        <a href="/downloads/{{item.order_code}}"><button class="btn btn-danger w-100" type="button">دانلود فاکتور</button></a>
-                    </div>
-                    <div class="col-md-6">
-                        <button class="btn btn-primary w-100" type="submit">تکمیل بسته بندی</button>
-                        </div>
-                    </form>
-                {% empty %}
-                <div class="bkbc wttc itemkala">
-                    <span>سفارش بسته بندی شده ای برای ارسال وجود ندارد</span>
-                </div>
-                {% endfor %}
-            </div>
-
-        </div>
-
-        <!-- ارسال شده ها -->
-        <div class="tab-pane fade" id="nav-home3" role="tabpanel" aria-labelledby="nav-3-tab">
-
-            <div>
-                {% for item in sended_orders %}
-                <form method="post" class="row g-3 listpro">
-                    <input type="hidden" name="job" value="submit_sended_orders">
-                    <div class="col-md-4">
-                        <input type="text" name="order_code" class="form-control" id="validationDefault01" value="{{ item.order_code }}" readonly>
-                    </div>
-                    <div class="col-md-4">
-                        <input type="text" name="full_name" class="form-control" id="validationDefault02" value="{{ item.full_name }}"
-                        readonly>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="input-group">
-                            <input name="phone_number" type="text" class="form-control" id="validationDefaultUsername"
-                                aria-describedby="inputGroupPrepend2" value="{{ item.phone_number }}" readonly>
-                        </div>
-                    </div>
-                    {% if item.package_status %}
-                    <div class="col-md-4">
-                        <input name="package_status" class="form-control" value="بسته بندی شده" readonly>
-                    </div>
-                    {% else %}
-                    <div class="col-md-4">
-                        <input name="package_status" class="form-control" value="بسته بندی نشده" readonly>
-                    </div>
-                    {% endif %}
-                    {% if item.send_status %}
-                    <div class="col-md-4">
-                        <select name="send_status" class="form-select" id="validationDefault04" required>
-                            <option>پست شده</option>
-                            <option>پست نشده</option>
-                        </select>
-                    </div>
-                    {% else %}
-                    <div class="col-md-4">
-                        <select name="send_status" class="form-select" id="validationDefault04" required>
-                            <option>پست نشده</option>
-                            <option>پست شده</option>
-                        </select>
-                    </div>
-                    {% endif %}
-                    <div class="col-md-4">
-                        <input name="send_method" class="form-control" value="{{ item.send_method }}" readonly>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="textseller"><span class="betc">متن ارسالی از طرف پرسنل دفتر:</span><input type="text" name="order_desc" class="form-control" value="{{item.order_desc}}" readonly></div>
-                    </div>
-                    <div class="col-md-6">
-                        <a href="/downloads/{{item.order_code}}"><button class="btn btn-danger w-100" type="button">دانلود فاکتور</button></a>
-                    </div>
-                    <div class="col-md-6">
-                        <button class="btn btn-primary w-100" type="submit">تکمیل بسته بندی</button>
-                        </div>
-                    </form>
-                {% empty %}
-                <div class="bkbc wttc itemkala">
-                    <span>سفارش ارسال شده ای یافت نشد</span>
-                </div>
-                {% endfor %}
-            </div>
-
-        </div>
-
-        <!-- جستجوی ارسال شده ها -->
-        <div class="tab-pane fade show active " id="nav-home1" role="tabpanel" aria-labelledby="nav-1-tab"
-        tabindex="0">
-
-            <div>
-                <form method="post" class="row g-3 listpro">
-                    <input type="hidden" name="job" value="submit_search">
-                    <div class="col-md-4">
-                        <input name="searched_text" type="text" class="form-control" id="validationDefault01" placeholder="شماره سفارش را وارد کنید">
-                    </div>
-                    <div class="col-6">
-                        <button class="btn btn-primary w-100" type="submit">جستجو</button>
-                    </div>
-                </form>
-                <hr>
-                {% if search_result %}
-                {% for item in search_result %}
-                <form method="post" class="row g-3 listpro">
-                    <input type="hidden" name="job" value="edit_search">
-                    <div class="col-md-4">
-                        <input type="text" name="order_code" class="form-control" id="validationDefault01" value="{{ item.order_code }}" readonly>
-                    </div>
-                    <div class="col-md-4">
-                        <input type="text" name="full_name" class="form-control" id="validationDefault02" value="{{ item.full_name }}"
-                        readonly>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="input-group">
-                            <input name="phone_number" type="text" class="form-control" id="validationDefaultUsername"
-                                aria-describedby="inputGroupPrepend2" value="{{ item.phone_number }}" readonly>
-                        </div>
-                    </div>
-                    {% if item.package_status %}
-                    <div class="col-md-4">
-                        <select name="package_status" class="form-select" id="validationDefault04" required>
-                            <option>بسته بندی شده</option>
-                            <option>بسته بندی نشده</option>
-                        </select>
-                    </div>
-                    
-                    {% else %}
-                    <div class="col-md-4">
-                        <select name="package_status" class="form-select" id="validationDefault04" required>
-                            <option>بسته بندی نشده</option>
-                            <option>بسته بندی شده</option>
-                        </select>
-                    </div>
-                    {% endif %}
-                    <div class="col-md-4">
-                        <select name="send_method" class="form-select" id="validationDefault04" required>
-                            <option selected readonly>{{ item.send_method }}</option>
-                            <option>پست پیشتاز</option>
-                            <option>پیک موتوری</option>
-                            <option>دریافت حضوری</option>
-                        </select>
-                    </div>
-                    {% if item.send_status %}
-                    <div class="col-md-4">
-                        <select name="send_status" class="form-select" id="validationDefault04" required>
-                            <option>پست شده</option>
-                            <option>پست نشده</option>
-                        </select>
-                    </div>
-                    {% else %}
-                    <div class="col-md-4">
-                        <select name="send_status" class="form-select" id="validationDefault04" required>
-                            <option>پست نشده</option>
-                            <option>پست شده</option>
-                        </select>
-                    </div>
-                    {% endif %}
-                    <div class="col-md-12">
-                        <div class="textseller"><span class="betc">متن ارسالی از طرف پرسنل دفتر:</span> <input type="text" name="order_desc" class="form-control" value="{{item.order_desc}}" readonly></div>
-                    </div>
-                    <div class="col-md-6">
-                        <a href="/downloads/{{item.order_code}}"><button class="btn btn-danger w-100" type="button">دانلود فاکتور</button></a>
-                    </div>
-                    <div class="col-md-6">
-                        <button class="btn btn-primary w-100" type="submit">اعمال تغییرات</button>
-                        </div>
-                    </form>
-                {% endfor %}
-                {% endif %}
-            </div>
-
-        </div>
-    </div>
-    <!-- پایان جستجوی ارسال شده ها -->
-    <!-- دفتر مرکزی -->
-    <div class="tab-pane fade" id="nav-home5" role="tabpanel" aria-labelledby="nav-5-tab">
-        <div>
-        <form method="post" enctype="multipart/form-data" class="listpro row g-3 needs-validation mt-3">
-            <input type="hidden" name="job" value="submit_order">
-            <div class="col-md-4">
-                <input name="order_code" type="text" class="form-control" id="validationDefault01" placeholder="کدسفارش" required>
-            </div>
-            <div class="col-md-4">
-                <input name="full_name" type="text" class="form-control" id="validationDefault02" placeholder="نام نام خانوادگی"
-                required>
-            </div>
-            <div class="col-md-4">
-                <div class="input-group">
-                    <input name="phone_number" type="text" class="form-control" id="validationDefaultUsername"
-                        aria-describedby="inputGroupPrepend2" placeholder="شماره تماس" required>
                 </div>
             </div>
-            <div class="col-md-12">
-                <div class="textseller"><span class="betc">متن ارسالی از طرف پرسنل دفتر:</span> <input type="text" name="order_desc" class="form-control"> </div>
-            </div>
-            <div class="col-6">
-                <input type="file" name="myfile" class="form-control" placeholder="بارگزاری فاکتور سفارش" required>
-            </div>
-            <div class="col-6">
-                <button class="btn btn-primary w-100" type="submit">ثبت تغییرات</button>
-            </div>
-        </form>
-    </div>
+        </div>
     </div>
 </div>
+
 </div>
 {% block JS %}
-<script src="{% static 'assets/js/orders/orders.js' %}"></script>
+<script>
+    function convertToPersian(numberInput) {
+        var persianDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
+        var convertedNumber = "";
+        for (var i = 0; i < numberInput.length; i++) {
+            var charCode = numberInput.charCodeAt(i);
+            if (charCode >= 48 && charCode <= 57) {
+                // Convert ASCII digits to Persian digits
+                var persianDigit = persianDigits[charCode - 48];
+                convertedNumber += persianDigit;
+            } else {
+                convertedNumber += numberInput.charAt(i);
+            }
+        }
+        return convertedNumber;
+    }
+
+    function handleInputChange() {
+        var inputElement = document.getElementById("SEARCH");
+        var inputValue = inputElement.value;
+        var persianValue = convertToPersian(inputValue);
+        inputElement.value = persianValue;
+    }
+</script>
 {% endblock %}
 {% endblock %}

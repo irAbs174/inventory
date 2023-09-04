@@ -2,15 +2,15 @@ from pathlib import Path
 import os
 
 
-CSRF_TRUSTED_ORIGINS = ["https://2020black.com",]
+CSRF_TRUSTED_ORIGINS = ["https://8000-irabs174-inventory-9rfsn2a2jvu.ws-eu104.gitpod.io",]
 
-SECRET_KEY = 'django-insecure-qlxr^v-kfzyw$hd1+m8r&wkcu2lo!%u-twqxdlof8$61*z=wg('
+SECRET_KEY = 'django-insecure-qlxl!?s,dh>giuh&^%SALEDC98AD%^$AJHG!?><<ADadfAR*da'
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['2020black.com']
+ALLOWED_HOSTS = ['8000-irabs174-inventory-9rfsn2a2jvu.ws-eu104.gitpod.io']
 
 DATABASES = {
     "default": {

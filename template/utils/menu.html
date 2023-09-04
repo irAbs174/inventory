@@ -5,58 +5,30 @@
   <link rel="stylesheet" href="{% static 'assets/css/utils/menu.css' %}" />
 </head>
 <body>
-  <nav class="ss-menu ">
+    <div class="menu">
     <ul>
       <li><a href="{% url 'dashboard' %}"><i class="bi bi-speedometer2"></i>داشبورد</a></li>
+      <li><a href="{% url 'orders' %}"><i class="bi bi-bus-front"></i>سفارشات سایت</a></li>
       <li><a href="{% url 'products' %}"><i class="bi bi-folder-plus"></i> ارشیو انبار کالا</a></li>
+      <li><a href="{% url 'add_products' %}"><i class="bi bi-plus-circle-dotted"></i>افزودن کالا</a></li>
       <li><a href="{% url 'materials' %}"><i class="bi bi-card-checklist"></i>ارشیو انبار مواد اولیه</a></li>
-      <li><a href="{% url 'broken_products' %}"><i class="bi bi-files"></i>آرشیو خرابی کالا</a></li>
-      <li><a href="{% url 'broken_materials' %}"><i class="bi bi-files"></i>آرشیو خرابی ماده اولیه</a></li>
-      <li><a href="{% url 'returned_products' %}"><i class="bi bi-files"></i>آرشیو کالا موجوعی</a></li>
-      <li><a href="{% url 'returned_materials' %}"><i class="bi bi-files"></i>آرشیو ماده اولیه مرجوعی</a></li>
-      <li><a href="{% url 'add_products' %}"><i class="bi bi-files"></i>افزودن کالا</a></li>
-      <li><a href="{% url 'add_materials' %}"><i class="bi bi-files"></i>افزودن ماده اولیه</a></li>
-      <li><a href="{% url 'add_broken_products' %}"><i class="bi bi-files"></i>افزودن خرابی کالا</a></li>
-      <li><a href="{% url 'add_broken_materials' %}"><i class="bi bi-files"></i>افزودن خرابی ماده اولیه</a></li>
-      <li><a href="{% url 'add_returned_products' %}"><i class="bi bi-files"></i>افزودن کالا موجوعی</a></li>
-      <li><a href="{% url 'add_returned_materials' %}"><i class="bi bi-files"></i>افزودن ماده اولیه مرجوعی</a></li>
+      <li><a href="{% url 'add_materials' %}"><i class="bi bi-file-plus-fill"></i>افزودن ماده اولیه</a></li>
+      <li><a href="{% url 'broken_products' %}"><i class="bi bi-bandaid"></i>آرشیو خرابی کالا</a></li></use>
+      <li><a href="{% url 'add_broken_products' %}"><i class="bi bi-plus-lg"></i>افزودن خرابی کالا</a></li>
+      <li><a href="{% url 'broken_materials' %}"><i class="bi bi-bandaid-fill"></i>آرشیو خرابی ماده اولیه</a></li>
+      <li><a href="{% url 'add_broken_materials' %}"><i class="bi bi-plus-square-dotted"></i>افزودن خرابی ماده اولیه</a></li>
+      <li><a href="{% url 'returned_products' %}"><i class="bi bi-bootstrap-reboot"></i>آرشیو کالا موجوعی</a></li>
+      <li><a href="{% url 'add_returned_products' %}"><i class="bi bi-plus-square"></i>افزودن کالا موجوعی</a></li>
+      <li><a href="{% url 'returned_materials' %}"><i class="bi bi-clipboard-minus"></i>آرشیو ماده اولیه مرجوعی</a></li>
+      <li><a href="{% url 'add_returned_materials' %}"><i class="bi bi-plus-circle"></i>افزودن ماده اولیه مرجوعی</a></li>
       <li><a href="{% url 'accounts' %}"><i class="bi bi-person-rolodex"></i>مشاهده وضعیت همکاران</a></li>
       <li><a href="#"><span class="ss-badge">!</span> <i class="bi bi-chat-dots"></i> ارسال پیام به همکاران</a></li>
       {% if user.is_staff %}
-      <li><a href="/import_excel"><i class="bi bi-folder-plus"></i>درون ریزی</a></li>
-      <li><a href="/UNIQUEINVENTORYADMINISTRATOR174"><i class="bi bi-speedometer2"></i>پنل توسعه</a></li>
+      <li><a href="/import_excel"><i class="bi bi-filetype-xlsx"></i>درون ریزی</a></li>
+      <li><a href="/UNIQUEINVENTORYADMINISTRATOR174"><i class="bi bi-browser-safari"></i>پنل توسعه</a></li>
       {% endif %}
-      <li><a href="{% url 'logout' %}"><i class="fas fa-sign-in-alt"></i>خروج از انبار</a></li>
+      <li><a href="{% url 'logout' %}"><i class="bi bi-door-open-fill"></i>خروج از انبار</a></li>
     </ul>
-  </nav>
-  <script src="{% static 'assets/js/utils/menu/jquery.ss.menu.js' %}"></script>
-  <script>
-    $(document).ready(function () {
-
-      $(".ss-menu").ssMenu();
-
-    });
-  </script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1VDDWMRSTH"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-1VDDWMRSTH');
-  </script>
-  <script>
-    try {
-      fetch(new Request("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js", { method: 'HEAD', mode: 'no-cors' })).then(function (response) {
-        return true;
-      }).catch(function (e) {
-        var carbonScript = document.createElement("script");
-        carbonScript.src = "//cdn.carbonads.com/carbon.js?serve=CK7DKKQU&placement=wwwjqueryscriptnet";
-        carbonScript.id = "_carbonads_js";
-        document.getElementById("carbon-block").appendChild(carbonScript);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  </script>
-</body>
+  </div>
+  </body>
 </html>

@@ -7,9 +7,16 @@
 <link rel="stylesheet" href="{% static 'assets/css/inventory/products/products.css' %}">
 {% endblock %}
 {% block CONTENT %}
-{% if user.is_authenticated %}{% include 'utils/menu.html' %}{% endif %}
-<input type="hidden" name="CODE" value="{{code}}">
-<div class="container-fluid bodyx">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3">
+            {% if user.is_authenticated %}{% include 'utils/menu.html' %}{% endif %}
+
+</div>
+        <div class="col-9">
+
+            <input type="hidden" name="CODE" value="{{code}}">
+<div class="bodyx">
     <!-- ----منو بار---- -->
     <div >
         <div class="row">
@@ -54,7 +61,12 @@
         </div>
         {% endfor %}
         <!-- لطفا لیست 50 تا بیاد و وقتی رسید به پایین مجدد 50 تای دیگه -->
-    </div></div>
+    </div></div></div>
+        </div>
+    </div>
+</div>
+</div>
+
 {% block JS %}
 <script src="{% static 'assets/js/inventory/products/products.js' %}"></script>
 {% endblock %}

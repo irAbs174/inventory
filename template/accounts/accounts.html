@@ -7,8 +7,14 @@
 <link rel="stylesheet" href="{% static 'assets/css/accounts/accounts.css' %}">
 {% endblock %}
 {% block CONTENT %}
-{% if user.is_authenticated %}{% include 'utils/menu.html' %}{% endif %}
-<table class="table table-striped text-center">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3">{% if user.is_authenticated %}{% include 'utils/menu.html' %}{% endif %}
+
+</div>
+        <div class="col-9">
+
+            <table class="container-fluid table table-striped text-center">
     <tr>
         <th>نام و نام خانوادگی</th>
         <th>شماره تماس</th>
@@ -29,4 +35,9 @@
     </tr>
     {% endfor %}
 </table>
+        </div>
+    </div>
+</div>
+
+
 {% endblock %}

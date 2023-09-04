@@ -34,3 +34,35 @@ class MaterialsCardexAdmin(admin.ModelAdmin):
 
 
 admin.site.register(MaterialsCardex, MaterialsCardexAdmin)
+
+class BrokenProductsAdmin(admin.ModelAdmin):
+    list_display = ('product_author', 'product_name', 'product_code', 'product_color', 'product_location')
+    list_filter = ('product_location', 'product_date',)
+    search_fields = ('product_code', 'product_name',)
+
+
+admin.site.register(BrokenProducts, BrokenProductsAdmin)
+
+class BrokenMaterialsAdmin(admin.ModelAdmin):
+    list_display = ('material_author', 'material_name', 'material_code', 'material_color', 'material_location')
+    list_filter = ('material_location', 'material_date',)
+    search_fields = ('material_code', 'material_name',)
+
+
+admin.site.register(BrokenMaterials, BrokenMaterialsAdmin)
+
+class ReturnedProductsAdmin(admin.ModelAdmin):
+    list_display = ('product_author', 'product_name', 'product_code', 'product_color', 'product_location')
+    list_filter = ('product_location', 'product_date',)
+    search_fields = ('product_code', 'product_name',)
+
+
+admin.site.register(ReturnedProducts, ReturnedProductsAdmin)
+
+class ReturnedMetarialsAdmin(admin.ModelAdmin):
+    list_display = ('material_author', 'material_name', 'material_code', 'material_color', 'material_location')
+    list_filter = ('material_location', 'material_date',)
+    search_fields = ('material_code', 'material_name',)
+
+
+admin.site.register(ReturnedMaterials, ReturnedMetarialsAdmin)

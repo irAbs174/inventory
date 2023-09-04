@@ -7,9 +7,15 @@
 <link rel="stylesheet" href="{% static 'assets/css/inventory/materials/add_materials.css' %}">
 {% endblock %}
 {% block CONTENT %}
-{% if user.is_authenticated %}{% include 'utils/menu.html' %}{% endif %}
-<input type="hidden" name="CODE" value="{{code}}">
-    <div class="container-fluid cardexbody">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3">{% if user.is_authenticated %}{% include 'utils/menu.html' %}{% endif %}
+
+</div>
+        <div class="col-9">
+
+            <input type="hidden" name="CODE" value="{{code}}">
+    <div class="cardexbody">
         <!-- -------کاردکس------ -->
         <div class="container-fluid"><br>
 
@@ -112,6 +118,11 @@
         </div>
     </div>
 <input type="hidden" class="CATEGORY" value="{{user.category}}">
+        </div>
+    </div>
+</div>
+
+
 {% block JS %}
 <script src="{% static 'assets/js/inventory/additions/add_material_broken.js' %}"></script>
 {% endblock %}

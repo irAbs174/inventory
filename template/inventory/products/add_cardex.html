@@ -8,9 +8,15 @@
 <link rel="stylesheet" href="{% static 'assets/css/inventory/products/add_products.css' %}">
 {% endblock %}
 {% block CONTENT %}
-{% if user.is_authenticated %}{% include 'utils/menu.html' %}{% endif %}
-<input type="hidden" name="CODE" value="{{key.code}}">
-<div class="container-fluid cardexbody">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3">{% if user.is_authenticated %}{% include 'utils/menu.html' %}{% endif %}
+
+</div>
+        <div class="col-9">
+
+            <input type="hidden" name="CODE" value="{{key.code}}">
+<div class="cardexbody">
             <div class="text-center mb-1">
             <a href="/inventory/product_cardex_excel/{{key.location}}^{{key.code}}^{{key.color}}"><button type="button" class="btn btn-success">خروجی EXCEL کاردکس <i class="bi bi-file-earmark-excel-fill"></i></button></a>
             <a href="/inventory/product_cardex_pdf/{{key.location}}^{{key.code}}^{{key.color}}"><button type="button" class="btn btn-primary">پرینت PAGE کاردکس <i class="bi bi-printer-fill"></i></button></a>
@@ -138,6 +144,11 @@
         </div>
     </div>
 </div>
+        </div>
+    </div>
+</div>
+
+
 </div>
 {% block JS %}
 <script src="{% static 'assets/js/inventory/products/products_cardex.js' %}"></script>
