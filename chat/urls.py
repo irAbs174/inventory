@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import pvmessage
+from .views import lobby
 
 
 urlpatterns = [
-    path("<room>", pvmessage),
+    path("lobby/<room>", lobby, name = "lobby"),
 ]

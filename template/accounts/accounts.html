@@ -25,7 +25,7 @@
         <td>{{ user.email }}</td>
         <td>{% if user.status %}آنلاین{% else %}آفلاین{% endif %}</td>
         <td>{% if user.is_staff %}توسعه دهنده{% elif user.is_superuser %}مدیریت{% elif user.is_inventor %}انباردار{% elif user.is_calculator %}حسابدار{% else %}تعریف نشده{% endif %}</td>
-        <td><a href="/chat/{{ user.last_name }}"><i class="bi bi-chat-right-dots sip"></i></a></td>
+        <td><i class="bi bi-chat-right-dots sip"></i></td>
     </tr>
     {% endfor %}
 </table>
