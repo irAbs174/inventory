@@ -34,6 +34,8 @@
                             ها</button>
                         <button class="nav-link wttc" id="nav-3-tab" data-bs-toggle="tab" data-bs-target="#nav-home3"
                             type="button" role="tab" aria-controls="nav-3" aria-selected="false">ارسال شده ها</button>
+                            <button class="nav-link wttc" id="nav-8-tab" data-bs-toggle="tab" data-bs-target="#nav-home8"
+                            type="button" role="tab" aria-controls="nav-8" aria-selected="false">کسری انبار</button>
                         <button class="nav-link active wttc" id="nav-1-tab" data-bs-toggle="tab"
                             data-bs-target="#nav-home1" type="button" role="tab" aria-controls="nav-1"
                             aria-selected="true">جستجو</button>
@@ -70,6 +72,7 @@
                                     <select name="package_status" class="form-select" id="validationDefault04" required>
                                         <option>بسته بندی شده</option>
                                         <option>بسته بندی نشده</option>
+                                        <option>کسری(اگر محصول در انبار موجود نیست انتخاب کنید)</option>
                                     </select>
                                 </div>
                                 {% else %}
@@ -77,19 +80,21 @@
                                     <select name="package_status" class="form-select" id="validationDefault04" required>
                                         <option>بسته بندی نشده</option>
                                         <option>بسته بندی شده</option>
+                                        <option>کسری(اگر محصول در انبار موجود نیست انتخاب کنید)</option>
                                     </select>
                                 </div>
                                 {% endif %}
                                 <div class="col-md-4">
                                     <select name="send_method" class="form-select" id="validationDefault04" required>
                                         <option selected readonly>{{ item.send_method }}</option>
+                                        <option>لینک اکسپرس</option>
                                         <option>پست پیشتاز</option>
                                         <option>پیک موتوری</option>
                                         <option>دریافت حضوری</option>
                                     </select>
                                 </div>
                                 <div class="col-md-4">
-                                    <input name="order_desc" class="form-control" value="{{ item.jpub }}" readonly>
+                                    <button class="btn btn-warning w-100" disabled>تاریخ ثبت : {{ item.jpub }}</button>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="textseller"><span class="betc">متن ارسالی از طرف پرسنل دفتر:</span>
@@ -137,15 +142,6 @@
                                             value="{{ item.phone_number }}" readonly>
                                     </div>
                                 </div>
-                                {% if item.package_status %}
-                                <div class="col-md-4">
-                                    <input name="package_status" class="form-control" value="بسته بندی شده" readonly>
-                                </div>
-                                {% else %}
-                                <div class="col-md-4">
-                                    <input name="package_status" class="form-control" value="بسته بندی نشده" readonly>
-                                </div>
-                                {% endif %}
                                 {% if item.send_status %}
                                 <div class="col-md-4">
                                     <select name="send_status" class="form-select" id="validationDefault04" required>
@@ -163,8 +159,17 @@
                                 {% endif %}
                                 <div class="col-md-4">
                                     <input name="send_method" class="form-control" value="{{ item.send_method }}"
-                                        readonly>
+                                    readonly>
                                 </div>
+                                {% if item.package_status %}
+                                <div class="col-md-4">
+                                    <button class="btn btn-warning w-100" disabled>تاریخ بسته بندی:{{ item.jpub }}</button>
+                                </div>
+                                {% else %}
+                                <div class="col-md-4">
+                                    <input name="package_status" class="form-control" value="بسته بندی نشده" readonly>
+                                </div>
+                                {% endif %}
                                 <div class="col-md-12">
                                     <div class="textseller"><span class="betc">متن ارسالی از طرف پرسنل دفتر:</span>
                                         <input type="text" name="order_desc" class="form-control"
@@ -211,15 +216,6 @@
                                             value="{{ item.phone_number }}" readonly>
                                     </div>
                                 </div>
-                                {% if item.package_status %}
-                                <div class="col-md-4">
-                                    <input name="package_status" class="form-control" value="بسته بندی شده" readonly>
-                                </div>
-                                {% else %}
-                                <div class="col-md-4">
-                                    <input name="package_status" class="form-control" value="بسته بندی نشده" readonly>
-                                </div>
-                                {% endif %}
                                 {% if item.send_status %}
                                 <div class="col-md-4">
                                     <select name="send_status" class="form-select" id="validationDefault04" required>
@@ -235,10 +231,19 @@
                                     </select>
                                 </div>
                                 {% endif %}
+                                {% if item.package_status %}
                                 <div class="col-md-4">
                                     <input name="send_method" class="form-control" value="{{ item.send_method }}"
                                         readonly>
                                 </div>
+                                    <div class="col-md-4">
+                                        <button class="btn btn-warning w-100" disabled>تاریخ ارسال : {{ item.jpub }}</button>
+                                    </div>
+                                {% else %}
+                                <div class="col-md-4">
+                                    <input name="package_status" class="form-control" value="بسته بندی نشده" readonly>
+                                </div>
+                                {% endif %}
                                 <div class="col-md-12">
                                     <div class="textseller"><span class="betc">متن ارسالی از طرف پرسنل
                                             دفتر:</span><input type="text" name="order_desc" class="form-control"
@@ -255,6 +260,74 @@
                             {% empty %}
                             <div class="bkbc wttc itemkala">
                                 <span>سفارش ارسال شده ای یافت نشد</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                    <!-- کسری انبار -->
+                    <div class="tab-pane fade" id="nav-home8" role="tabpanel" aria-labelledby="nav-8-tab">
+
+                        <div>
+                            {% for item in fractions_orders %}
+                            <form method="post" class="row g-3 listpro">
+                                <input type="hidden" name="job" value="submit_fraction_change">
+                                <span class="badge bg-secondary">{{ forloop.counter }}</span>
+                                <div class="col-md-4">
+                                    <input type="text" name="order_code" class="form-control" id="validationDefault01"
+                                        value="{{ item.order_code }}" readonly>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" name="full_name" class="form-control" id="validationDefault02"
+                                        value="{{ item.full_name }}" readonly>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <input name="phone_number" type="text" class="form-control"
+                                            id="validationDefaultUsername" aria-describedby="inputGroupPrepend2"
+                                            value="{{ item.phone_number }}" readonly>
+                                    </div>
+                                </div>
+                                {% if item.package_status %}
+                                <div class="col-md-4">
+                                    <select name="package_status" class="form-select" id="validationDefault04" required>
+                                        <option>بسته بندی شده</option>
+                                        <option>بسته بندی نشده</option>
+                                        <option>کسری(اگر محصول در انبار موجود نیست انتخاب کنید)</option>
+                                    </select>
+                                </div>
+                                {% else %}
+                                <div class="col-md-4">
+                                    <select name="package_status" class="form-select" id="validationDefault04" required>
+                                        <option>بسته بندی نشده</option>
+                                        <option>بسته بندی شده</option>
+                                        <option>کسری(اگر محصول در انبار موجود نیست انتخاب کنید)</option>
+                                    </select>
+                                </div>
+                                {% endif %}
+                                <div class="col-md-4">
+                                    <select name="send_method" class="form-select" id="validationDefault04" disabled>
+                                        <option selected readonly>{{ item.send_method }}</option>
+                                        <option>لینک اکسپرس</option>
+                                        <option>پست پیشتاز</option>
+                                        <option>پیک موتوری</option>
+                                        <option>دریافت حضوری</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-warning w-100" disabled>تاریخ ثبت : {{ item.jpub }}</button>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="textseller"><span class="betc">متن ارسالی از طرف پرسنل دفتر:</span>
+                                        <span name="order_desc">{{ item.order_desc }}</span>
+                                    </div>
+                                </div>
+                                    <button class="btn btn-primary w-100" type="submit">تغییر وضعیت سفارش</button>
+                            </form>
+
+                            {% empty %}
+                            <div class="bkbc wttc itemkala">
+                                <span>کسری برای نمایش وجود ندارد</span>
                             </div>
                             {% endfor %}
                         </div>
