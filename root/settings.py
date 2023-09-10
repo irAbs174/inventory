@@ -9,6 +9,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'pure_pagination',
     'rest_framework',
     'import_export',
     "dashboard",
@@ -43,6 +44,13 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ],
+}
+
+PAGINATION_SETTINGS = {
+    'PAGE_RANGE_DISPLAYED': 30,
+    'MARGIN_PAGES_DISPLAYED': 6,
+
+    'SHOW_FIRST_PAGE_WHEN_INVALID': True,
 }
 
 AUTH_USER_MODEL = "account.user_accounts"
