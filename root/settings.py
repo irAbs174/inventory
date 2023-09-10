@@ -16,7 +16,7 @@ INSTALLED_APPS = [
     "account",
     "inventory",
     "orders",
-    "chat",
+    "chat"
 ]
 
 # LOGIN REDIRECT URL
