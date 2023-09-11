@@ -9,7 +9,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'pure_pagination',
     'rest_framework',
     'import_export',
     "dashboard",
@@ -18,7 +17,6 @@ INSTALLED_APPS = [
     "orders",
     "chat",
 ]
-#,
 # LOGIN REDIRECT URL
 LOGIN_REDIRECT_URL = '/'
 

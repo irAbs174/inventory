@@ -1,4 +1,4 @@
-from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
@@ -15,7 +15,7 @@ def orders_index(request):
     if request.method == 'POST':
         job = request.POST.get('job')
         if job == 'submit_new_orders':
-            fractions_orders = Fractions.objects.all()
+            fractions_orders_value = Fractions.objects.all()
             order_code = request.POST.get('order_code')
             full_name = request.POST.get('full_name')
             phone_number = request.POST.get('phone_number')
@@ -41,18 +41,31 @@ def orders_index(request):
                                     send_method = send_method,)
                                 # Success message
                                 new_orders_value = SiteOrders.objects.filter(send_status = False, package_status = False)
-                                packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
-                                sended_orders = SiteOrders.objects.filter(send_status = True)
+                                packaged_orders_value = SiteOrders.objects.filter(package_status = True, send_status = False)
+                                sended_orders_value = SiteOrders.objects.filter(send_status = True)
                                 message = 'سفارش با موفقیت به روز رسانی شد'
+                                page = request.GET.get('page', 1)
+                                paginator0 = Paginator(new_orders_value, 50)
+                                paginator1 = Paginator(packaged_orders_value, 50)
+                                paginator2 = Paginator(sended_orders_value, 50)
+                                paginator3 = Paginator(fractions_orders_value, 50)
                                 try:
-                                    page = request.GET.get('page', 1)
+                                    new_orders = paginator0.page(page)
+                                    packaged_orders = paginator1.page(page)
+                                    sended_orders = paginator2.page(page)
+                                    fractions_orders = paginator3.page(page)
                                 except PageNotAnInteger:
-                                    page = 1
-                                objects = new_orders_value
-                                p = Paginator(objects, request=request)
-                                new_orders = p.page(page)
+                                    new_orders = paginator0.page(1)
+                                    packaged_orders = paginator1.page(1)
+                                    sended_orders = paginator3.page(1)
+                                    fractions_orders = paginator2.page(1)
+                                except EmptyPage:
+                                    new_orders = paginator0.page(paginator0.num_pages)
+                                    packaged_orders = paginator1.page(paginator1.num_pages)
+                                    sended_orders = paginator2.page(paginator2.num_pages)
+                                    fractions_orders = paginator3.page(paginator3.num_pages)
                                 context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                                return render(request, "orders/orders_index.html", context = context)
+                                return render(request, 'orders/orders_index.html', context = context)
                             elif package_status =="بسته بندی شده":
                                 order.update(
                                     submit_by = request.user.email,
@@ -68,15 +81,16 @@ def orders_index(request):
                                 packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
                                 sended_orders = SiteOrders.objects.filter(send_status = True)
                                 message = 'سفارش با موفقیت به روز رسانی شد'
+                                page = request.GET.get('page', 1)
+                                paginator = Paginator(new_orders_value, 50)
                                 try:
-                                    page = request.GET.get('page', 1)
+                                    new_orders = paginator.page(page)
                                 except PageNotAnInteger:
-                                    page = 1
-                                objects = new_orders_value
-                                p = Paginator(objects, request=request)
-                                new_orders = p.page(page)
+                                    new_orders = paginator.page(1)
+                                except EmptyPage:
+                                    new_orders = paginator.page(paginator.num_pages)
                                 context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                                return render(request, "orders/orders_index.html", context = context)
+                                return render(request, 'orders/orders_index.html', context = context)
                             elif package_status == "کسری(اگر محصول در انبار موجود نیست انتخاب کنید)":
                                 for i in order:
                                     factor = i.factor_file
@@ -98,86 +112,91 @@ def orders_index(request):
                                 packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
                                 sended_orders = SiteOrders.objects.filter(send_status = True)
                                 message = 'سفارش با موقیت ایجاد شد'
+                                page = request.GET.get('page', 1)
+                                paginator = Paginator(new_orders_value, 50)
                                 try:
-                                    page = request.GET.get('page', 1)
+                                    new_orders = paginator.page(page)
                                 except PageNotAnInteger:
-                                    page = 1
-                                objects = new_orders_value
-                                p = Paginator(objects, request=request)
-                                new_orders = p.page(page)
+                                    new_orders = paginator.page(1)
+                                except EmptyPage:
+                                    new_orders = paginator.page(paginator.num_pages)
                                 context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                                return render(request, "orders/orders_index.html", context = context)
+                                return render(request, 'orders/orders_index.html', context = context)
                             else:
                                 new_orders_value = SiteOrders.objects.filter(send_status = False, package_status = False)
                                 packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
                                 sended_orders = SiteOrders.objects.filter(send_status = True)
                                 message = 'توضیحات سفارش خالیست'
+                                page = request.GET.get('page', 1)
+                                paginator = Paginator(new_orders_value, 50)
                                 try:
-                                    page = request.GET.get('page', 1)
+                                    new_orders = paginator.page(page)
                                 except PageNotAnInteger:
-                                    page = 1
-                                objects = new_orders_value
-                                p = Paginator(objects, request=request)
-                                new_orders = p.page(page)
+                                    new_orders = paginator.page(1)
+                                except EmptyPage:
+                                    new_orders = paginator.page(paginator.num_pages)
                                 context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                                return render(request, "orders/orders_index.html", context = context)
+                                return render(request, 'orders/orders_index.html', context = context)
                         else:
                             new_orders_value = SiteOrders.objects.filter(send_status = False, package_status = False)
                             packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
                             sended_orders = SiteOrders.objects.filter(send_status = True)
                             message = 'توضیحات سفارش خالیست'
+                            page = request.GET.get('page', 1)
+                            paginator = Paginator(new_orders_value, 50)
                             try:
-                                page = request.GET.get('page', 1)
+                                new_orders = paginator.page(page)
                             except PageNotAnInteger:
-                                page = 1
-                            objects = new_orders_value
-                            p = Paginator(objects, request=request)
-                            new_orders = p.page(page)
+                                new_orders = paginator.page(1)
+                            except EmptyPage:
+                                new_orders = paginator.page(paginator.num_pages)
                             context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                            return render(request, "orders/orders_index.html", context = context)
+                            return render(request, 'orders/orders_index.html', context = context)
                     else:
                         new_orders_value = SiteOrders.objects.filter(send_status = False, package_status = False)
                         packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
                         sended_orders = SiteOrders.objects.filter(send_status = True)
                         message = 'شماره تلفن وارد نشده'  
-
+                        page = request.GET.get('page', 1)
+                        paginator = Paginator(new_orders_value, 50)
                         try:
-                            page = request.GET.get('page', 1)
+                            new_orders = paginator.page(page)
                         except PageNotAnInteger:
-                            page = 1
-                        objects = new_orders_value
-                        p = Paginator(objects, request=request)
-                        new_orders = p.page(page)
+                            new_orders = paginator.page(1)
+                        except EmptyPage:
+                            new_orders = paginator.page(paginator.num_pages)
                         context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                        return render(request, "orders/orders_index.html", context = context)
+                        return render(request, 'orders/orders_index.html', context = context)
                 else:
                     new_orders_value = SiteOrders.objects.filter(send_status = False, package_status = False)
                     packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
                     sended_orders = SiteOrders.objects.filter(send_status = True)
                     message = 'نام و نام خانوادگی وارد نشده'
+                    page = request.GET.get('page', 1)
+                    paginator = Paginator(new_orders_value, 50)
                     try:
-                        page = request.GET.get('page', 1)
+                        new_orders = paginator.page(page)
                     except PageNotAnInteger:
-                        page = 1
-                    objects = new_orders_value
-                    p = Paginator(objects, request=request)
-                    new_orders = p.page(page)
+                        new_orders = paginator.page(1)
+                    except EmptyPage:
+                        new_orders = paginator.page(paginator.num_pages)
                     context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                    return render(request, "orders/orders_index.html", context = context)
+                    return render(request, 'orders/orders_index.html', context = context)
             else:
                 new_orders_value = SiteOrders.objects.filter(send_status = False, package_status = False)
                 packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
                 sended_orders = SiteOrders.objects.filter(send_status = True)
                 message = 'کد سفارش وارد نشده'
+                page = request.GET.get('page', 1)
+                paginator = Paginator(new_orders_value, 50)
                 try:
-                    page = request.GET.get('page', 1)
+                    new_orders = paginator.page(page)
                 except PageNotAnInteger:
-                    page = 1
-                objects = new_orders_value
-                p = Paginator(objects, request=request)
-                new_orders = p.page(page)
+                    new_orders = paginator.page(1)
+                except EmptyPage:
+                    new_orders = paginator.page(paginator.num_pages)
                 context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                return render(request, "orders/orders_index.html", context = context)
+                return render(request, 'orders/orders_index.html', context = context)
         elif job == 'submit_packaged_orders':
             fractions_orders = Fractions.objects.all()
             order_code = request.POST.get('order_code')
@@ -199,55 +218,111 @@ def orders_index(request):
                                 order.update(send_status = False, submit_by = request.user.email,)
                                 # Success message
                                 new_orders = SiteOrders.objects.filter(send_status = False, package_status = False)
-                                packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
+                                packaged_orders_value = SiteOrders.objects.filter(package_status = True, send_status = False)
                                 sended_orders = SiteOrders.objects.filter(send_status = True)
                                 message = 'سفارش با موفقیت به روز رسانی شد'
+                                page = request.GET.get('page', 1)
+                                paginator = Paginator(packaged_orders_value, 50)
+                                try:
+                                    packaged_orders = paginator.page(page)
+                                except PageNotAnInteger:
+                                    packaged_orders = paginator.page(1)
+                                except EmptyPage:
+                                    packaged_orders = paginator.page(paginator.num_pages)
                                 context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                                return render(request, "orders/orders_index.html", context = context)
+                                return render(request, 'orders/orders_index.html', context = context)
                             elif send_status == "پست شده":
                                 order.update(send_status = True, submit_by = request.user.email, order_time = datetime.now())
                                 # Success message
                                 new_orders = SiteOrders.objects.filter(send_status = False, package_status = False)
-                                packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
+                                packaged_orders_value = SiteOrders.objects.filter(package_status = True, send_status = False)
                                 sended_orders = SiteOrders.objects.filter(send_status = True)
                                 message = 'سفارش با موفقیت به روز رسانی شد'
+                                page = request.GET.get('page', 1)
+                                paginator = Paginator(packaged_orders_value, 50)
+                                try:
+                                    packaged_orders = paginator.page(page)
+                                except PageNotAnInteger:
+                                    packaged_orders = paginator.page(1)
+                                except EmptyPage:
+                                    packaged_orders = paginator.page(paginator.num_pages)
                                 context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                                return render(request, "orders/orders_index.html", context = context)
+                                return render(request, 'orders/orders_index.html', context = context)
                             else:
                                 new_orders = SiteOrders.objects.filter(send_status = False, package_status = False)
-                                packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
+                                packaged_orders_value = SiteOrders.objects.filter(package_status = True, send_status = False)
                                 sended_orders = SiteOrders.objects.filter(send_status = True)
                                 message = 'شماره تلفن وارد نشده'  
+                                page = request.GET.get('page', 1)
+                                paginator = Paginator(packaged_orders_value, 50)
+                                try:
+                                    packaged_orders = paginator.page(page)
+                                except PageNotAnInteger:
+                                    packaged_orders = paginator.page(1)
+                                except EmptyPage:
+                                    packaged_orders = paginator.page(paginator.num_pages)
                                 context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                                return render(request, "orders/orders_index.html", context = context)
+                                return render(request, 'orders/orders_index.html', context = context)
                         else:
                             new_orders = SiteOrders.objects.filter(send_status = False, package_status = False)
-                            packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
+                            packaged_orders_value = SiteOrders.objects.filter(package_status = True, send_status = False)
                             sended_orders = SiteOrders.objects.filter(send_status = True)
                             message = 'توضیحات سفارش خالیست'  
+                            page = request.GET.get('page', 1)
+                            paginator = Paginator(packaged_orders_value, 50)
+                            try:
+                                packaged_orders = paginator.page(page)
+                            except PageNotAnInteger:
+                                packaged_orders = paginator.page(1)
+                            except EmptyPage:
+                                packaged_orders = paginator.page(paginator.num_pages)
                             context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                            return render(request, "orders/orders_index.html", context = context)
+                            return render(request, 'orders/orders_index.html', context = context)
                     else:
                         new_orders = SiteOrders.objects.filter(send_status = False, package_status = False)
-                        packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
+                        packaged_orders_value = SiteOrders.objects.filter(package_status = True, send_status = False)
                         sended_orders = SiteOrders.objects.filter(send_status = True)
                         message = 'شماره تلفن وارد نشده'  
+                        page = request.GET.get('page', 1)
+                        paginator = Paginator(packaged_orders_value, 50)
+                        try:
+                            packaged_orders = paginator.page(page)
+                        except PageNotAnInteger:
+                            packaged_orders = paginator.page(1)
+                        except EmptyPage:
+                            packaged_orders = paginator.page(paginator.num_pages)
                         context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                        return render(request, "orders/orders_index.html", context = context)
+                        return render(request, 'orders/orders_index.html', context = context)
                 else:
                     new_orders = SiteOrders.objects.filter(send_status = False, package_status = False)
-                    packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
+                    packaged_orders_value = SiteOrders.objects.filter(package_status = True, send_status = False)
                     sended_orders = SiteOrders.objects.filter(send_status = True)
                     message = 'نام و نام خانوادگی وارد نشده'
+                    page = request.GET.get('page', 1)
+                    paginator = Paginator(packaged_orders_value, 50)
+                    try:
+                        packaged_orders = paginator.page(page)
+                    except PageNotAnInteger:
+                        packaged_orders = paginator.page(1)
+                    except EmptyPage:
+                        packaged_orders = paginator.page(paginator.num_pages)
                     context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                    return render(request, "orders/orders_index.html", context = context)
+                    return render(request, 'orders/orders_index.html', context = context)
             else:
                 new_orders = SiteOrders.objects.filter(send_status = False, package_status = False)
-                packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
+                packaged_orders_value = SiteOrders.objects.filter(package_status = True, send_status = False)
                 sended_orders = SiteOrders.objects.filter(send_status = True)
                 message = 'کد سفارش وارد نشده'
+                page = request.GET.get('page', 1)
+                paginator = Paginator(packaged_orders_value, 50)
+                try:
+                    packaged_orders = paginator.page(page)
+                except PageNotAnInteger:
+                    packaged_orders = paginator.page(1)
+                except EmptyPage:
+                    packaged_orders = paginator.page(paginator.num_pages)
                 context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                return render(request, "orders/orders_index.html", context = context)
+                return render(request, 'orders/orders_index.html', context = context)
         elif job == 'submit_sended_orders':
             fractions_orders = Fractions.objects.all()
             order_code = request.POST.get('order_code')
@@ -270,56 +345,112 @@ def orders_index(request):
                                 # Success message
                                 new_orders = SiteOrders.objects.filter(send_status = False, package_status = False)
                                 packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
-                                sended_orders = SiteOrders.objects.filter(send_status = True)
+                                sended_orders_value = SiteOrders.objects.filter(send_status = True)
                                 message = 'سفارش با موفقیت به روز رسانی شد'
+                                page = request.GET.get('page', 1)
+                                paginator = Paginator(sended_orders_value, 50)
+                                try:
+                                    sended_orders = paginator.page(page)
+                                except PageNotAnInteger:
+                                    sended_orders = paginator.page(1)
+                                except EmptyPage:
+                                    sended_orders = paginator.page(paginator.num_pages)
                                 context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                                return render(request, "orders/orders_index.html", context = context)
+                                return render(request, 'orders/orders_index.html', context = context)
                             elif send_status == "پست شده":
                                 order.update(send_status = True, submit_by = request.user.email,)
                                 # Success message
                                 new_orders = SiteOrders.objects.filter(send_status = False, package_status = False)
                                 packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
-                                sended_orders = SiteOrders.objects.filter(send_status = True)
+                                sended_orders_value = SiteOrders.objects.filter(send_status = True)
                                 message = 'سفارش با موفقیت به روز رسانی شد'
+                                page = request.GET.get('page', 1)
+                                paginator = Paginator(sended_orders_value, 50)
+                                try:
+                                    sended_orders = paginator.page(page)
+                                except PageNotAnInteger:
+                                    sended_orders = paginator.page(1)
+                                except EmptyPage:
+                                    sended_orders = paginator.page(paginator.num_pages)
                                 context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                                return render(request, "orders/orders_index.html", context = context)
+                                return render(request, 'orders/orders_index.html', context = context)
                             else:
                                 new_orders = SiteOrders.objects.filter(send_status = False, package_status = False)
                                 packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
-                                sended_orders = SiteOrders.objects.filter(send_status = True)
+                                sended_orders_value = SiteOrders.objects.filter(send_status = True)
                                 message = 'شماره تلفن وارد نشده'  
+                                page = request.GET.get('page', 1)
+                                paginator = Paginator(sended_orders_value, 50)
+                                try:
+                                    sended_orders = paginator.page(page)
+                                except PageNotAnInteger:
+                                    sended_orders = paginator.page(1)
+                                except EmptyPage:
+                                    sended_orders = paginator.page(paginator.num_pages)
                                 context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                                return render(request, "orders/orders_index.html", context = context)
+                                return render(request, 'orders/orders_index.html', context = context)
                         else:
                             new_orders = SiteOrders.objects.filter(send_status = False, package_status = False)
                             packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
-                            sended_orders = SiteOrders.objects.filter(send_status = True)
+                            sended_orders_value = SiteOrders.objects.filter(send_status = True)
                             message = 'توضیحات سفارش خالیست'  
+                            page = request.GET.get('page', 1)
+                            paginator = Paginator(sended_orders_value, 50)
+                            try:
+                                sended_orders = paginator.page(page)
+                            except PageNotAnInteger:
+                                sended_orders = paginator.page(1)
+                            except EmptyPage:
+                                sended_orders = paginator.page(paginator.num_pages)
                             context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                            return render(request, "orders/orders_index.html", context = context)
+                            return render(request, 'orders/orders_index.html', context = context)
                     else:
                         new_orders = SiteOrders.objects.filter(send_status = False, package_status = False)
                         packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
-                        sended_orders = SiteOrders.objects.filter(send_status = True)
+                        sended_orders_value = SiteOrders.objects.filter(send_status = True)
                         message = 'شماره تلفن وارد نشده'  
+                        page = request.GET.get('page', 1)
+                        paginator = Paginator(sended_orders_value, 50)
+                        try:
+                            sended_orders = paginator.page(page)
+                        except PageNotAnInteger:
+                            sended_orders = paginator.page(1)
+                        except EmptyPage:
+                            sended_orders = paginator.page(paginator.num_pages)
                         context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                        return render(request, "orders/orders_index.html", context = context)
+                        return render(request, 'orders/orders_index.html', context = context)
                 else:
                     new_orders = SiteOrders.objects.filter(send_status = False, package_status = False)
                     packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
-                    sended_orders = SiteOrders.objects.filter(send_status = True)
+                    sended_orders_value = SiteOrders.objects.filter(send_status = True)
                     message = 'نام و نام خانوادگی وارد نشده'
+                    page = request.GET.get('page', 1)
+                    paginator = Paginator(sended_orders_value, 50)
+                    try:
+                        sended_orders = paginator.page(page)
+                    except PageNotAnInteger:
+                        sended_orders = paginator.page(1)
+                    except EmptyPage:
+                        sended_orders = paginator.page(paginator.num_pages)
                     context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                    return render(request, "orders/orders_index.html", context = context)
+                    return render(request, 'orders/orders_index.html', context = context)
             else:
                 new_orders = SiteOrders.objects.filter(send_status = False, package_status = False)
                 packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
-                sended_orders = SiteOrders.objects.filter(send_status = True)
+                sended_orders_value = SiteOrders.objects.filter(send_status = True)
                 message = 'کد سفارش وارد نشده'
+                page = request.GET.get('page', 1)
+                paginator = Paginator(sended_orders_value, 50)
+                try:
+                    sended_orders = paginator.page(page)
+                except PageNotAnInteger:
+                    sended_orders = paginator.page(1)
+                except EmptyPage:
+                    sended_orders = paginator.page(paginator.num_pages)
                 context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                return render(request, "orders/orders_index.html", context = context)
+                return render(request, 'orders/orders_index.html', context = context)
         elif job == 'submit_fraction_change':
-            fractions_orders = Fractions.objects.all()
+            fractions_orders_value = Fractions.objects.all()
             order_code = request.POST.get('order_code')
             full_name = request.POST.get('full_name')
             phone_number = request.POST.get('phone_number')
@@ -336,8 +467,16 @@ def orders_index(request):
                                 packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
                                 sended_orders = SiteOrders.objects.filter(send_status = True)
                                 message = 'وضعیت کنونی سفارش کسری است'
+                                page = request.GET.get('page', 1)
+                                paginator = Paginator(fractions_orders_value, 50)
+                                try:
+                                    fractions_orders = paginator.page(page)
+                                except PageNotAnInteger:
+                                    fractions_orders = paginator.page(1)
+                                except EmptyPage:
+                                    fractions_orders = paginator.page(paginator.num_pages)
                                 context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                                return render(request, "orders/orders_index.html", context = context)
+                                return render(request, 'orders/orders_index.html', context = context)
                             else:
                                 order = Fractions.objects.filter(order_code = order_code,)
                                 for i in order:
@@ -358,36 +497,76 @@ def orders_index(request):
                                 packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
                                 sended_orders = SiteOrders.objects.filter(send_status = True)
                                 message = 'سفارش با موفقیت به روز رسانی شد'
+                                page = request.GET.get('page', 1)
+                                paginator = Paginator(fractions_orders_value, 50)
+                                try:
+                                    fractions_orders = paginator.page(page)
+                                except PageNotAnInteger:
+                                    fractions_orders = paginator.page(1)
+                                except EmptyPage:
+                                    fractions_orders = paginator.page(paginator.num_pages)
                                 context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                                return render(request, "orders/orders_index.html", context = context)
+                                return render(request, 'orders/orders_index.html', context = context)
                         else:
                             new_orders = SiteOrders.objects.filter(send_status = False, package_status = False)
                             packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
                             sended_orders = SiteOrders.objects.filter(send_status = True)
                             message = 'توضیحات سفارش خالیست'  
+                            page = request.GET.get('page', 1)
+                            paginator = Paginator(fractions_orders_value, 50)
+                            try:
+                                fractions_orders = paginator.page(page)
+                            except PageNotAnInteger:
+                                fractions_orders = paginator.page(1)
+                            except EmptyPage:
+                                fractions_orders = paginator.page(paginator.num_pages)
                             context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                            return render(request, "orders/orders_index.html", context = context)
+                            return render(request, 'orders/orders_index.html', context = context)
                     else:
                         new_orders = SiteOrders.objects.filter(send_status = False, package_status = False)
                         packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
                         sended_orders = SiteOrders.objects.filter(send_status = True)
                         message = 'شماره تلفن وارد نشده'  
+                        page = request.GET.get('page', 1)
+                        paginator = Paginator(fractions_orders_value, 50)
+                        try:
+                            fractions_orders = paginator.page(page)
+                        except PageNotAnInteger:
+                            fractions_orders = paginator.page(1)
+                        except EmptyPage:
+                            fractions_orders = paginator.page(paginator.num_pages)
                         context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                        return render(request, "orders/orders_index.html", context = context)
+                        return render(request, 'orders/orders_index.html', context = context)
                 else:
                     new_orders = SiteOrders.objects.filter(send_status = False, package_status = False)
                     packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
                     sended_orders = SiteOrders.objects.filter(send_status = True)
                     message = 'نام و نام خانوادگی وارد نشده'
+                    page = request.GET.get('page', 1)
+                    paginator = Paginator(fractions_orders_value, 50)
+                    try:
+                        fractions_orders = paginator.page(page)
+                    except PageNotAnInteger:
+                        fractions_orders = paginator.page(1)
+                    except EmptyPage:
+                        fractions_orders = paginator.page(paginator.num_pages)
                     context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                    return render(request, "orders/orders_index.html", context = context)
+                    return render(request, 'orders/orders_index.html', context = context)
             else:
                 new_orders = SiteOrders.objects.filter(send_status = False, package_status = False)
                 packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
                 sended_orders = SiteOrders.objects.filter(send_status = True)
                 message = 'کد سفارش وارد نشده'
+                page = request.GET.get('page', 1)
+                paginator = Paginator(fractions_orders_value, 50)
+                try:
+                    fractions_orders = paginator.page(page)
+                except PageNotAnInteger:
+                    fractions_orders = paginator.page(1)
+                except EmptyPage:
+                    fractions_orders = paginator.page(paginator.num_pages)
                 context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-                return render(request, "orders/orders_index.html", context = context)
+                return render(request, 'orders/orders_index.html', context = context)
         elif job == 'submit_search':
             fractions_orders = Fractions.objects.all()
             searched_text = request.POST.get('searched_text')
@@ -553,17 +732,33 @@ def orders_index(request):
         fractions_orders = Fractions.objects.all()
         new_orders = SiteOrders.objects.filter(send_status = False, package_status = False)
         packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
-        sended_orders = SiteOrders.objects.filter(send_status = True)
+        sended_orders_value = SiteOrders.objects.filter(send_status = True)
         message = ''
+        page = request.GET.get('page', 1)
+        paginator = Paginator(sended_orders_value, 50)
+        try:
+            sended_orders = paginator.page(page)
+        except PageNotAnInteger:
+            sended_orders = paginator.page(1)
+        except EmptyPage:
+            sended_orders = paginator.page(paginator.num_pages)
         context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-        return render(request, "orders/orders_index.html", context = context)
-    new_orders = SiteOrders.objects.filter(send_status = False, package_status = False)
-    packaged_orders = SiteOrders.objects.filter(package_status = True, send_status = False)
-    sended_orders = SiteOrders.objects.filter(send_status = True)
-    fractions_orders = Fractions.objects.all()
+        return render(request, 'orders/orders_index.html', context = context)
+    new_orders_value = SiteOrders.objects.filter(send_status = False, package_status = False)
+    packaged_orders_value = SiteOrders.objects.filter(package_status = True, send_status = False)
+    sended_orders_value = SiteOrders.objects.filter(send_status = True)
+    fractions_orders_value = Fractions.objects.all()
     message = ''
+    page = request.GET.get('page', 1)
+    paginator = Paginator(sended_orders_value, 50)
+    try:
+        sended_orders = paginator.page(page)
+    except PageNotAnInteger:
+        sended_orders = paginator.page(1)
+    except EmptyPage:
+        sended_orders = paginator.page(paginator.num_pages)
     context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
-    return render(request, "orders/orders_index.html", context = context)
+    return render(request, 'orders/orders_index.html', context = context)
 
 @csrf_exempt
 @login_required

@@ -102,43 +102,53 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <a href="/downloads/{{item.order_code}}" target="_blank"><button
-                                            class="btn btn-danger w-100" type="button">دانلود فاکتور</button></a>
+                                    <button href="/downloads/{{item.order_code}}" target="_blank" class="btn btn-danger w-100" type="button">دانلود فاکتور</button>
                                 </div>
                                 <div class="col-md-6">
                                     <button class="btn btn-primary w-100" type="submit">تکمیل بسته بندی</button>
                                 </div>
                             </form>
-                            <div class="pagination">
-                                {% if page_obj.has_previous %}
-                                    <a href="?{{ page_obj.previous_page_number.querystring }}" class="prev">&lsaquo;&lsaquo; {% trans "previous" %}</a>
-                                {% else %}
-                                    <span class="disabled prev">&lsaquo;&lsaquo; {% trans "previous" %}</span>
-                                {% endif %}
-                                {% for page in page_obj.pages %}
-                                    {% if page %}
-                                        {% ifequal page page_obj.number %}
-                                            <span class="current page">{{ page }}</span>
-                                        {% else %}
-                                            <a href="?{{ page.querystring }}" class="page">{{ page }}</a>
-                                        {% endifequal %}
-                                    {% else %}
-                                        ...
-                                    {% endif %}
-                                {% endfor %}
-                                {% if page_obj.has_next %}
-                                    <a href="?{{ page_obj.next_page_number.querystring }}" class="next">{% trans "next" %} &rsaquo;&rsaquo;</a>
-                                {% else %}
-                                    <span class="disabled next">{% trans "next" %} &rsaquo;&rsaquo;</span>
-                                {% endif %}
-                            </div>                        
+                                                  
                             {% empty %}
                             <div class="bkbc wttc itemkala">
                                 <span>سفارش فعالی برای برسی وجود ندارد</span>
                             </div>
                             {% endfor %}
+                            {% if new_orders.has_other_pages %}
+                            <div class="container">
+                                <div class="row justify-content-center">
+                                    <div class="col-sm">
+                                        {% if new_orders.has_previous %}
+                                            <button class="btn btn-info w-100"><a class="page-link" href="?page={{ new_orders.previous_page_number }}"><=</a></button>  
+                                        {% else %}
+                                            <button class="btn btn-secondary disabled w-100"><span>|</span></button>
+                                        {% endif %}
+                                    </div>
+                                    {% for i in new_orders.paginator.page_range %}
+                                        {% if new_orders.number == i %}
+                                            <div class="col-sm">
+                                                <button class="btn btn-success active w-100"><a class="page-link" href="#"><span>{{ i }} <span class="sr-only">(current)</span></span></a></button> 
+                                            </div>
+                                        {% else %}
+                                            <div class="col-sm">
+                                                <button class="btn btn-light w-100"><a class="page-link" href="?page={{ i }}">{{ i }}</a></button>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if new_orders.has_next %}
+                                        <div class="col-sm">
+                                            <button class="btn btn-info w-100"><a class="page-link" href="?page={{ new_orders.next_page_number }}">=></a></button>   
+                                        </div>
+                                    {% else %}
+                                        <div class="col-sm">
+                                            <button class="btn btn-secondary disabled w-100"><span>|</span></button>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                            </div>  
                         </div>
-                    </div>
 
                     <!-- بسته بندی شده ها -->
                     <div class="tab-pane fade" id="nav-home2" role="tabpanel" aria-labelledby="nav-2-tab">
@@ -210,6 +220,39 @@
                                 <span>سفارش بسته بندی شده ای برای ارسال وجود ندارد</span>
                             </div>
                             {% endfor %}
+                            <div class="container">
+                            {% if packaged_orders.has_other_pages %}
+                                <div class="row justify-content-center">
+                                    <div class="col-sm">
+                                        {% if packaged_orders.has_previous %}
+                                            <button class="btn btn-info w-100"><a class="page-link" href="?page={{ packaged_orders.previous_page_number }}"><=</a></button>  
+                                        {% else %}
+                                            <button class="btn btn-secondary disabled w-100"><span>|</span></button>
+                                        {% endif %}
+                                    </div>
+                                    {% for i in packaged_orders.paginator.page_range %}
+                                        {% if packaged_orders.number == i %}
+                                            <div class="col-sm">
+                                                <button class="btn btn-success active w-100"><a class="page-link" href="#"><span>{{ i }} <span class="sr-only">(current)</span></span></a></button> 
+                                            </div>
+                                        {% else %}
+                                            <div class="col-sm">
+                                                <button class="btn btn-light w-100"><a class="page-link" href="?page={{ i }}">{{ i }}</a></button>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if packaged_orders.has_next %}
+                                        <div class="col-sm">
+                                            <button class="btn btn-info w-100"><a class="page-link" href="?page={{ packaged_orders.next_page_number }}">=></a></button>   
+                                        </div>
+                                    {% else %}
+                                        <div class="col-sm">
+                                            <button class="btn btn-secondary disabled w-100"><span>|</span></button>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+                            </div>
                         </div>
 
                     </div>
@@ -283,6 +326,39 @@
                                 <span>سفارش ارسال شده ای یافت نشد</span>
                             </div>
                             {% endfor %}
+                            {% if sended_orders.has_other_pages %}
+                            <div class="container">
+                                <div class="row justify-content-center">
+                                    <div class="col-sm">
+                                        {% if sended_orders.has_previous %}
+                                            <button class="btn btn-info w-100"><a class="page-link" href="?page={{ sended_orders.previous_page_number }}"><=</a></button>  
+                                        {% else %}
+                                            <button class="btn btn-secondary disabled w-100"><span>|</span></button>
+                                        {% endif %}
+                                    </div>
+                                    {% for i in sended_orders.paginator.page_range %}
+                                        {% if sended_orders.number == i %}
+                                            <div class="col-sm">
+                                                <button class="btn btn-success active w-100"><a class="page-link" href="#"><span>{{ i }} <span class="sr-only">(current)</span></span></a></button> 
+                                            </div>
+                                        {% else %}
+                                            <div class="col-sm">
+                                                <button class="btn btn-light w-100"><a class="page-link" href="?page={{ i }}">{{ i }}</a></button>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if sended_orders.has_next %}
+                                        <div class="col-sm">
+                                            <button class="btn btn-info w-100"><a class="page-link" href="?page={{ sended_orders.next_page_number }}">=></a></button>   
+                                        </div>
+                                    {% else %}
+                                        <div class="col-sm">
+                                            <button class="btn btn-secondary disabled w-100"><span>|</span></button>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
                         </div>
 
                     </div>
@@ -351,6 +427,39 @@
                                 <span>کسری برای نمایش وجود ندارد</span>
                             </div>
                             {% endfor %}
+                            {% if fractions_orders.has_other_pages %}
+                            <div class="container">
+                                <div class="row justify-content-center">
+                                    <div class="col-sm">
+                                        {% if fractions_orders.has_previous %}
+                                            <button class="btn btn-info w-100"><a class="page-link" href="?page={{ fractions_orders.previous_page_number }}"><=</a></button>  
+                                        {% else %}
+                                            <button class="btn btn-secondary disabled w-100"><span>|</span></button>
+                                        {% endif %}
+                                    </div>
+                                    {% for i in fractions_orders.paginator.page_range %}
+                                        {% if fractions_orders.number == i %}
+                                            <div class="col-sm">
+                                                <button class="btn btn-success active w-100"><a class="page-link" href="#"><span>{{ i }} <span class="sr-only">(current)</span></span></a></button> 
+                                            </div>
+                                        {% else %}
+                                            <div class="col-sm">
+                                                <button class="btn btn-light w-100"><a class="page-link" href="?page={{ i }}">{{ i }}</a></button>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if fractions_orders.has_next %}
+                                        <div class="col-sm">
+                                            <button class="btn btn-info w-100"><a class="page-link" href="?page={{ fractions_orders.next_page_number }}">=></a></button>   
+                                        </div>
+                                    {% else %}
+                                        <div class="col-sm">
+                                            <button class="btn btn-secondary disabled w-100"><span>|</span></button>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
                         </div>
 
                     </div>
