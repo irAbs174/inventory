@@ -89,6 +89,7 @@ def orders_index(request):
                                     new_orders = paginator.page(1)
                                 except EmptyPage:
                                     new_orders = paginator.page(paginator.num_pages)
+                                fractions_orders = Fractions.objects.all()
                                 context = {'new_orders':new_orders,'packaged_orders':packaged_orders, 'sended_orders':sended_orders, 'search_result':'', 'message': message, 'fractions_orders':fractions_orders,}
                                 return render(request, 'orders/orders_index.html', context = context)
                             elif package_status == "کسری(اگر محصول در انبار موجود نیست انتخاب کنید)":
