@@ -1,4 +1,4 @@
 __pycache__
-EVN
+venv
 db.sqlite3
 migrations
