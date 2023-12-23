@@ -11,114 +11,114 @@
     <div class="row">
         <div class="col-3">{% if user.is_authenticated %}{% include 'utils/menu.html' %}{% endif %}
 
-</div>
+        </div>
         <div class="col-9">
 
             <input type="hidden" name="CODE" value="{{code}}">
-    <div class="cardexbody">
-        <!-- -------کاردکس------ -->
-        <div class="container-fluid"><br>
+            <div class="cardexbody">
+                <!-- -------کاردکس------ -->
+                <div class="container-fluid"><br>
 
-            <div class="cardex" id="cardexprint">
+                    <div class="cardex" id="cardexprint">
 
-                <div class="row g-3">
-                    <div class="col-6">
-                        <input class="form-control productName" type="text" placeholder="نام ماده اولیه"
-                            aria-label="default input example" required>
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <input class="form-control productName" type="text" placeholder="نام ماده اولیه"
+                                    aria-label="default input example" required>
+                            </div>
+                            <div class="col-6">
+                                <input class="form-control productCode" type="text" placeholder="کد ماده اولیه"
+                                    aria-label="default input example" required>
+                            </div>
+                            <div class="col-6">
+                                <select class="form-select" aria-label="Default select example" required>
+                                    <option selected>انتخاب رنگ</option>
+                                    <option value="red">قرمز</option>
+                                    <option value="blue">آبی</option>
+                                    <option value="green">سبز</option>
+                                    <option value="yellow">زرد</option>
+                                    <option value="orange">نارنجی</option>
+                                    <option value="purple">بنفش</option>
+                                    <option value="grayr">طوسی</option>
+                                    <option value="carbonic">ذغالی</option>
+                                    <option value="wiki">بادمجونی</option>
+                                    <option value="pink">صورتی</option>
+                                    <option value="carbonic">کرم</option>
+                                    <option value="carbonic">عسلی</option>
+                                    <option value="carbonic">قهوه‌ای سوخته</option>
+                                    <option value="brown">قهوه‌ای</option>
+                                    <option value="gray">خاکستری</option>
+                                    <option value="black">مشکی</option>
+                                    <option value="white">سفید</option>
+                                    <option value="cyan">فیروزه‌ای</option>
+                                    <option value="magenta">ارغوانی</option>
+                                    <option value="indigo">نیلی</option>
+                                    <option value="gold">طلایی</option>
+                                    <option value="silver">نقره‌ای</option>
+                                    <option value="lime">لیمویی</option>
+                                    <option value="olive">زیتونی</option>
+                                    <option value="maroon">گلبهی</option>
+                                    <option value="navy">نیرویی</option>
+                                    <option value="teal">کبود دریایی</option>
+                                    <option value="coral">مرجانی</option>
+                                    <option value="turquoise">فیروزه‌ای زمردی</option>
+                                    <option value="salmon">ماهیچه‌ای</option>
+                                    <option value="violet">بنفش مایل به آبی</option>
+                                    <option value="aquamarine">آبی کمربندی</option>
+                                    <option value="chartreuse">خردلی</option>
+                                    <option value="azure">آسمانی</option>
+                                    <option value="lavender">بنفش کدر</option>
+                                    <option value="pink">صورتی</option>
+                                    <option value="beige">مایل به قهوه‌ای</option>
+                                    <option value="wheat">گندمی</option>
+                                    <option value="tan">خاکستری مایل به قهوه‌ای</option>
+                                    <option value="khaki">خاکی</option>
+                                    <option value="moccasin">نخودی</option>
+                                    <option value="bisque">بنفش روشن</option>
+                                    <option value="peru">بژ</option>
+                                    <option value="chocolate">شکلاتی</option>
+                                    <option value="olivedrab">زیتونی تیره</option>
+                                    <option value="sienna">سیاه مایل به قهوه‌ای</option>
+                                    <option value="darkblue">تیره آبی</option>
+                                    <option value="darkgreen">تیره سبز</option>
+                                    <option value="darkred">تیره قرمز</option>
+                                    <option value="darkorange">تیره نارنجی</option>
+                                    <option value="zereshki">زرشکی</option>
+                                    <option value="sorme">سرمه ای</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <select class="form-select" aria-label="Default select example" required>
+                                    <option selected>انتخاب محل انبار</option>
+                                    <option value="1">انبار اخلاقی</option>
+                                    <option value="2">پلاک سه</option>
+                                    <option value="3">مغازه غدیر</option>
+                                    <option value="4">دفتر انبار مرکزی</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <select class="form-select" aria-label="Default select example" required>
+                                    <option selected>انتخاب سالن انبار</option>
+                                    <option value="1">سالن یک</option>
+                                    <option value="2">سالن دو</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <select class="form-select" aria-label="Default select example" required>
+                                    <option selected>انتخاب واحد شمارش</option>
+                                    <option value="1">عدد</option>
+                                    <option value="2">متر</option>
+                                    <option value="3">سانتیمتر</option>
+                                    <option value="4">کیلوگرم</option>
+                                    <option value="5">جفت</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary do0" type="submit">بروزرسانی کاردکس</button>
+                        </div>
                     </div>
-                    <div class="col-6">
-                        <input class="form-control productCode" type="text" placeholder="کد ماده اولیه"
-                            aria-label="default input example" required>
-                    </div>
-                    <div class="col-6">
-                        <select class="form-select" aria-label="Default select example" required>
-                          <option selected>انتخاب رنگ</option>
-                          <option value="red">قرمز</option>
-                          <option value="blue">آبی</option>
-                          <option value="green">سبز</option>
-                          <option value="yellow">زرد</option>
-                          <option value="orange">نارنجی</option>
-                          <option value="purple">بنفش</option>
-                          <option value="grayr">طوسی</option>
-                          <option value="carbonic">ذغالی</option>
-                          <option value="wiki">بادمجونی</option>
-                          <option value="pink">صورتی</option>
-                          <option value="carbonic">کرم</option>
-                          <option value="carbonic">عسلی</option>
-                          <option value="carbonic">قهوه‌ای سوخته</option>
-                          <option value="brown">قهوه‌ای</option>
-                          <option value="gray">خاکستری</option>
-                          <option value="black">مشکی</option>
-                          <option value="white">سفید</option>
-                          <option value="cyan">فیروزه‌ای</option>
-                          <option value="magenta">ارغوانی</option>
-                          <option value="indigo">نیلی</option>
-                          <option value="gold">طلایی</option>
-                          <option value="silver">نقره‌ای</option>
-                          <option value="lime">لیمویی</option>
-                          <option value="olive">زیتونی</option>
-                          <option value="maroon">گلبهی</option>
-                          <option value="navy">نیرویی</option>
-                          <option value="teal">کبود دریایی</option>
-                          <option value="coral">مرجانی</option>
-                          <option value="turquoise">فیروزه‌ای زمردی</option>
-                          <option value="salmon">ماهیچه‌ای</option>
-                          <option value="violet">بنفش مایل به آبی</option>
-                          <option value="aquamarine">آبی کمربندی</option>
-                          <option value="chartreuse">خردلی</option>
-                          <option value="azure">آسمانی</option>
-                          <option value="lavender">بنفش کدر</option>
-                          <option value="pink">صورتی</option>
-                          <option value="beige">مایل به قهوه‌ای</option>
-                          <option value="wheat">گندمی</option>
-                          <option value="tan">خاکستری مایل به قهوه‌ای</option>
-                          <option value="khaki">خاکی</option>
-                          <option value="moccasin">نخودی</option>
-                          <option value="bisque">بنفش روشن</option>
-                          <option value="peru">بژ</option>
-                          <option value="chocolate">شکلاتی</option>
-                          <option value="olivedrab">زیتونی تیره</option>
-                          <option value="sienna">سیاه مایل به قهوه‌ای</option>
-                          <option value="darkblue">تیره آبی</option>
-                          <option value="darkgreen">تیره سبز</option>
-                          <option value="darkred">تیره قرمز</option>
-                          <option value="darkorange">تیره نارنجی</option>
-                          <option value="zereshki">زرشکی</option>
-                          <option value="sorme">سرمه ای</option>
-                        </select>
-                      </div>
-                    <div class="col-6">
-                        <select class="form-select" aria-label="Default select example" required>
-                            <option selected>انتخاب محل انبار</option>
-                            <option value="1">انبار اخلاقی</option>
-                            <option value="2">پلاک سه</option>
-                            <option value="3">مغازه غدیر</option>
-                            <option value="4">انبار دفتر مرکزی</option>
-                        </select>
-                    </div>
-                    <div class="col-6">
-                        <select class="form-select" aria-label="Default select example" required>
-                            <option selected>انتخاب سالن انبار</option>
-                            <option value="1">سالن یک</option>
-                            <option value="2">سالن دو</option>
-                        </select>
-                    </div>
-                    <div class="col-6">
-                        <select class="form-select" aria-label="Default select example" required>
-                            <option selected>انتخاب واحد شمارش</option>
-                            <option value="1">عدد</option>
-                            <option value="2">متر</option>
-                            <option value="3">سانتیمتر</option>
-                            <option value="4">کیلوگرم</option>
-                            <option value="5">جفت</option>
-                        </select>
-                    </div>
-                    <button class="btn btn-primary do0" type="submit">بروزرسانی کاردکس</button>
                 </div>
             </div>
-        </div>
-    </div>
-<input type="hidden" class="CATEGORY" value="{{user.category}}">
+            <input type="hidden" class="CATEGORY" value="{{user.category}}">
         </div>
     </div>
 </div>

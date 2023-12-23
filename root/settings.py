@@ -2,6 +2,7 @@ from .local import *
 
 
 INSTALLED_APPS = [
+    "ash",
     "daphne",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -20,7 +21,7 @@ INSTALLED_APPS = [
 # LOGIN REDIRECT URL
 LOGIN_REDIRECT_URL = '/'
 
-SESSION_EXPIRE_SECONDS = 650
+SESSION_EXPIRE_SECONDS = 1500
 
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
 

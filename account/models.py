@@ -23,7 +23,7 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
-USER_CATEGORY = ((0, "پرسنل انبار اخلافی"), (1, "پرسنل انبار پلاک ۳"), (2, "پرسنل انبار مغازه غدیر"), (3, "انباردار / حسابدار"), (4, "توسعه / مدیریت"))
+USER_CATEGORY = ((0, "پرسنل انبار اخلاقی"), (1, "پرسنل انبار پلاک ۳"), (2, "پرسنل انبار مغازه غدیر"), (3, "انباردار / حسابدار"), (4, "توسعه / مدیریت"))
 
 class user_accounts(AbstractBaseUser, PermissionsMixin):
     email = models.CharField(max_length=120,unique=True, verbose_name='پست الکترونیک')

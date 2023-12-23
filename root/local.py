@@ -2,15 +2,15 @@ from pathlib import Path
 import os
 
 
-CSRF_TRUSTED_ORIGINS = ["https://8000-irabs174-inventory-kf548t3bqf3.ws-eu104.gitpod.io",]
+CSRF_TRUSTED_ORIGINS = ["https://8000-irabs174-inventory-xabgdymq35v.ws-eu107.gitpod.io",]
 
-SECRET_KEY = 'django-insecure-qlxl!?s,dh>giuh&^%SALEDC98AD%^$AJHG!?><<ADadfAR*da'
+SECRET_KEY = 'django-insecure-qlxr^v-kfzyw$hd1+m8r&wkcu2lo!%u-twqxdlof8$61*z=wg('
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['8000-irabs174-inventory-kf548t3bqf3.ws-eu104.gitpod.io']
+ALLOWED_HOSTS = ['8000-irabs174-inventory-xabgdymq35v.ws-eu107.gitpod.io', 'www.8000-irabs174-inventory-xabgdymq35v.ws-eu107.gitpod.io', 'inventory.123kif.ir', 'www.inventory.123kif.ir']
 
 DATABASES = {
     "default": {
@@ -38,7 +38,7 @@ STATIC_ROOT = "/var/www/public/inventory/static"
 STATIC_URL = '/static/'
 
 # Media root Dir configuration
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = "/var/www/public/inventory/media"
 
 # Media URL
 MEDIA_URL = 'media/'

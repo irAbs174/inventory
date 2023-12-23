@@ -22,7 +22,7 @@ admin.site.register(Materials, MaterialsAdmin)
 class ProductsCardexAdmin(admin.ModelAdmin):
     list_display = ('public_key', 'factor_number', 'product', 'operation', 'number', 'author',)
     list_filter = ('author', 'date', 'operation',)
-    search_fields = ('factor_number',  'product',)
+    search_fields = ('factor_number','public_key',  'product',)
 
 
 admin.site.register(ProductsCardex, ProductsCardexAdmin)
@@ -30,7 +30,7 @@ admin.site.register(ProductsCardex, ProductsCardexAdmin)
 class MaterialsCardexAdmin(admin.ModelAdmin):
     list_display = ('public_key', 'factor_number', 'material', 'operation', 'number', 'author',)
     list_filter = ('author', 'date', 'operation',)
-    search_fields = ('factor_number',  'material',)
+    search_fields = ('factor_number','public_key',  'material',)
 
 
 admin.site.register(MaterialsCardex, MaterialsCardexAdmin)

@@ -6,7 +6,7 @@ from .models import user_accounts
 
 class AccountsAdmin(admin.ModelAdmin):
     list_display = ('email', 'last_login', 'phoneNumber', 'is_staff',)
-    list_filter = ( 'email', 'is_superuser',  'is_staff',  'first_name',)
+    list_filter = ( 'email', 'is_superuser',  'is_staff',  'first_name', 'status')
     search_fields = ('all',)
 
 
